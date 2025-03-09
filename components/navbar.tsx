@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { Menu, X, Sun, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useTheme } from 'next-themes'
+import Logo from '@/assets/logo.png'
+import Image from 'next/image'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -49,11 +51,10 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Beranda', href: '/' },
-    { name: 'Tentang', href: '#about' },
-    { name: 'Wisata', href: '#attractions' },
-    { name: 'Akomodasi', href: '#accommodation' },
-    { name: 'Galeri', href: '#gallery' },
-    { name: 'Kontak', href: '#contact' },
+    { name: 'Budaya', href: '#about' },
+    { name: 'Sejarah', href: '#attractions' },
+    { name: 'Paket Wisata', href: '#accommodation' },
+    { name: 'Atraksi/Acara', href: '#gallery' },
   ]
 
   return (
@@ -67,9 +68,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center z-50">
-            <span className="text-xl md:text-2xl font-bold text-primary">
-              Desa Wisata
-            </span>
+            <Image src={Logo} width={80} height={80} alt="logo" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -83,22 +82,23 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            {mounted && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                suppressHydrationWarning
-              >
-                {theme === 'dark' ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-              </Button>
-            )}
-            <Button>Pesan Sekarang</Button>
+            {/* <Button>Pesan Sekarang</Button> */}
           </nav>
+
+          {mounted && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              suppressHydrationWarning
+            >
+              {theme === 'dark' ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </Button>
+          )}
 
           {/* Mobile Navigation Toggle */}
           <div className="flex items-center md:hidden z-50">
