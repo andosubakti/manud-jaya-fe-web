@@ -63,7 +63,7 @@ export default function TestimonialSection() {
                   ))}
                 </div>
                 <p className="italic text-muted-foreground mb-6">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </p>
               </CardContent>
               <CardFooter className="flex items-center">
