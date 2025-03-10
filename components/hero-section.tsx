@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
+import HeroImage from '@/assets/hero.png'
 
 export default function HeroSection() {
   return (
@@ -8,7 +9,7 @@ export default function HeroSection() {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1542897644-e04428948020?q=80&w=2070"
+          src={HeroImage}
           alt="Desa Wisata Background"
           fill
           priority
@@ -19,23 +20,28 @@ export default function HeroSection() {
 
       <div className="container mx-auto px-4 text-center relative z-10 text-white">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          Jelajahi Keindahan <span className="text-primary">Desa Wisata</span>
+          {/* Jelajahi Keindahan <span className="text-primary">Desa Wisata</span> */}
+          Desa <br></br> Manud Jaya
         </h1>
         <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 text-gray-100">
-          Nikmati pengalaman wisata autentik dengan pemandangan alam yang
-          menakjubkan dan tradisi budaya yang kaya
+          {/* Nikmati pengalaman wisata autentik dengan pemandangan alam yang
+          menakjubkan dan tradisi budaya yang kaya */}
+          Segarnya alam, Indahnya wisata
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button size="lg" className="text-base">
-            Jelajahi Sekarang
-          </Button>
           <Button
+            size="lg"
+            className="text-base rounded-full p-8 font-bold border-4 border-white/60"
+          >
+            Pelajari Lebih Lanjut
+          </Button>
+          {/* <Button
             size="lg"
             variant="outline"
             className="text-base bg-transparent text-white border-white hover:bg-white/10"
           >
             Lihat Video
-          </Button>
+          </Button> */}
         </div>
       </div>
       <div className="absolute bottom-10 left-0 right-0 text-center z-10">

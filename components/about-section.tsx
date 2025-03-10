@@ -1,39 +1,48 @@
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
+import AboutImg from '@/assets/about.png'
 
 export default function AboutSection() {
   return (
     <section id="about" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center gap-12">
+        <div className="flex flex-col-reverse md:flex-row items-center gap-12">
           <div className="md:w-1/2">
             <div className="relative">
               <Image
-                src="https://images.unsplash.com/photo-1542897731-42aca67344f4?q=80&w=800"
+                src={AboutImg}
                 alt="Desa Wisata Manud Jaya"
                 width={800}
                 height={600}
                 className="rounded-lg shadow-lg object-cover"
               />
-              <div className="absolute -bottom-6 -right-6 bg-primary text-white p-4 rounded-lg shadow-lg">
+              {/* <div className="absolute -bottom-6 -right-6 bg-primary text-white p-4 rounded-lg shadow-lg">
                 <p className="text-2xl font-bold">10+</p>
                 <p className="text-sm">Tahun Pengalaman</p>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="md:w-1/2">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Tentang{' '}
-              <span className="text-primary">Desa Wisata Manud Jaya</span>
+              Selamat Datang di Desa Wisata Manud Jaya: Keindahan Alam dan
+              Kearifan Lokal
+              {/* <span className="text-primary">Desa Wisata Manud Jaya</span> */}
             </h2>
-            <p className="text-muted-foreground mb-6">
-              Desa Wisata Manud Jaya adalah destinasi wisata yang menawarkan
-              pengalaman autentik kehidupan pedesaan Indonesia. Terletak di kaki
-              gunung dengan pemandangan alam yang menakjubkan, desa ini
-              menawarkan berbagai atraksi wisata yang menggabungkan keindahan
-              alam dan kekayaan budaya lokal.
+            <p className="text-muted-foreground mb-6 text-justify">
+              Desa Wisata Manud Jaya adalah sebuah desa yang telah berdiri sejak
+              abad ke-18, berawal dari komunitas kecil yang hidup berdampingan
+              dengan alam. Desa ini pertama kali didirikan oleh sekelompok
+              petani dan pengrajin yang mencari tanah subur untuk bercocok
+              tanam. Seiring berjalannya waktu, desa ini berkembang menjadi
+              pusat budaya dan tradisi yang kaya, mempertahankan kearifan lokal
+              yang diwariskan dari generasi ke generasi. <br></br>
+              <br></br> Keunikan Desa Manud Jaya terletak pada perpaduan antara
+              keindahan alam, kearifan lokal, dan keramahan warganya. Dengan
+              dikelilingi oleh perbukitan hijau, sawah yang membentang luas,
+              serta sungai yang jernih, desa ini menjadi destinasi favorit bagi
+              wisatawan yang ingin merasakan pengalaman hidup di pedesaan yang
+              asri dan tenang.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               <div className="flex items-start">
                 <div className="bg-primary/10 p-3 rounded-full mr-4">
                   <svg
@@ -142,7 +151,7 @@ export default function AboutSection() {
                 </div>
               </div>
             </div>
-            <Button>Pelajari Lebih Lanjut</Button>
+            <Button>Pelajari Lebih Lanjut</Button> */}
           </div>
         </div>
       </div>
