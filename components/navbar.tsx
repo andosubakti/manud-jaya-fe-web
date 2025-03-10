@@ -91,6 +91,7 @@ export default function Navbar() {
               size="sm"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               suppressHydrationWarning
+              className="hidden md:block"
             >
               {theme === 'dark' ? (
                 <Sun className="h-4 w-4" />
