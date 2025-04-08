@@ -2,8 +2,11 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
 import HeroImage from '@/assets/hero.png'
+import { FC } from 'react'
+import { HeroSectionType } from '@/lib/type'
 
-export default function HeroSection() {
+const HeroSection: FC<HeroSectionType> = (props) => {
+  const { title, description } = props
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-20 md:pt-0 overflow-hidden">
       {/* Background Image with Overlay */}
@@ -20,13 +23,10 @@ export default function HeroSection() {
 
       <div className="container mx-auto px-4 text-center relative z-10 text-white">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          {/* Jelajahi Keindahan <span className="text-primary">Desa Wisata</span> */}
-          Desa <br></br> Manud Jaya
+          {title}
         </h1>
         <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 text-gray-100">
-          {/* Nikmati pengalaman wisata autentik dengan pemandangan alam yang
-          menakjubkan dan tradisi budaya yang kaya */}
-          Segarnya alam, Indahnya wisata
+          {description}
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button
@@ -44,7 +44,7 @@ export default function HeroSection() {
           </Button> */}
         </div>
       </div>
-      <div className="absolute bottom-10 left-0 right-0 text-center z-10">
+      {/* <div className="absolute bottom-10 left-0 right-0 text-center z-10">
         <Link href="#about" className="animate-bounce inline-block text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,9 @@ export default function HeroSection() {
             <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
         </Link>
-      </div>
+      </div> */}
     </section>
   )
 }
+
+export default HeroSection

@@ -18,6 +18,8 @@ import PaketImg2 from '@/assets/paket-2.png'
 import PaketImg3 from '@/assets/paket-3.png'
 import PaketImg4 from '@/assets/paket-4.png'
 import PaketImg5 from '@/assets/paket-5.png'
+import { FC } from 'react'
+import { PaketWisataSectionType } from '@/lib/type'
 
 const paket = [
   {
@@ -62,7 +64,8 @@ const paket = [
   },
 ]
 
-export default function PaketWisataCarousel() {
+const PaketWisataCarousel: FC<PaketWisataSectionType> = (props) => {
+  const { title, description } = props
   const [currentIndex, setCurrentIndex] = useState(0)
   const [visibleItems, setVisibleItems] = useState(3)
   const [touchStart, setTouchStart] = useState(0)
@@ -161,14 +164,9 @@ export default function PaketWisataCarousel() {
         <div className="w-full flex flex-row items-center justify-between max-w-[75vw]">
           <div className="text-left mb-10 md:mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-              {/* Jelajahi <span className="text-primary">Destinasi Wisata</span> Kami */}
-              Paket Wisata
+              {title}
             </h2>
-            <p className="text-muted-foreground max-w-2xl">
-              Untuk memberikan pengalaman terbaik bagi para pengunjung, Desa
-              Manud Jaya menyediakan berbagai paket wisata yang dapat
-              disesuaikan dengan kebutuhan dan minat wisatawan:
-            </p>
+            <p className="text-muted-foreground max-w-2xl">{description}</p>
           </div>
           <div className="hidden gap-4 md:flex md:flex-row">
             <Button
@@ -282,3 +280,5 @@ export default function PaketWisataCarousel() {
     </section>
   )
 }
+
+export default PaketWisataCarousel

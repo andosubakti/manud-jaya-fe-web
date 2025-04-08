@@ -1,7 +1,10 @@
 import Image from 'next/image'
 import AboutImg from '@/assets/about.png'
+import { AboutSectionType } from '@/lib/type'
+import { FC } from 'react'
 
-export default function AboutSection() {
+const AboutSection: FC<AboutSectionType> = (props) => {
+  const { title, description } = props
   return (
     <section id="about" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
@@ -22,139 +25,15 @@ export default function AboutSection() {
             </div>
           </div>
           <div className="md:w-1/2">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Selamat Datang di Desa Wisata Manud Jaya: Keindahan Alam dan
-              Kearifan Lokal
-              {/* <span className="text-primary">Desa Wisata Manud Jaya</span> */}
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">{title}</h2>
             <p className="text-muted-foreground mb-6 text-justify">
-              Desa Wisata Manud Jaya adalah sebuah desa yang telah berdiri sejak
-              abad ke-18, berawal dari komunitas kecil yang hidup berdampingan
-              dengan alam. Desa ini pertama kali didirikan oleh sekelompok
-              petani dan pengrajin yang mencari tanah subur untuk bercocok
-              tanam. Seiring berjalannya waktu, desa ini berkembang menjadi
-              pusat budaya dan tradisi yang kaya, mempertahankan kearifan lokal
-              yang diwariskan dari generasi ke generasi. <br></br>
-              <br></br> Keunikan Desa Manud Jaya terletak pada perpaduan antara
-              keindahan alam, kearifan lokal, dan keramahan warganya. Dengan
-              dikelilingi oleh perbukitan hijau, sawah yang membentang luas,
-              serta sungai yang jernih, desa ini menjadi destinasi favorit bagi
-              wisatawan yang ingin merasakan pengalaman hidup di pedesaan yang
-              asri dan tenang.
+              {description}
             </p>
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-              <div className="flex items-start">
-                <div className="bg-primary/10 p-3 rounded-full mr-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 text-primary"
-                  >
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Lokasi Strategis</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Mudah diakses dari kota besar
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="bg-primary/10 p-3 rounded-full mr-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 text-primary"
-                  >
-                    <path d="M3 7V5c0-1.1.9-2 2-2h2" />
-                    <path d="M17 3h2c1.1 0 2 .9 2 2v2" />
-                    <path d="M21 17v2c0 1.1-.9 2-2 2h-2" />
-                    <path d="M7 21H5c-1.1 0-2-.9-2-2v-2" />
-                    <rect width="7" height="5" x="7" y="7" rx="1" />
-                    <rect width="7" height="5" x="10" y="12" rx="1" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Atraksi Beragam</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Wisata alam dan budaya
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="bg-primary/10 p-3 rounded-full mr-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 text-primary"
-                  >
-                    <path d="M20 7h-9" />
-                    <path d="M14 17H5" />
-                    <circle cx="17" cy="17" r="3" />
-                    <circle cx="7" cy="7" r="3" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Ramah Lingkungan</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Konsep ekowisata berkelanjutan
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="bg-primary/10 p-3 rounded-full mr-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 text-primary"
-                  >
-                    <path d="M17 6.1H3" />
-                    <path d="M21 12.1H3" />
-                    <path d="M15.1 18H3" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Kuliner Lokal</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Cita rasa autentik desa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <Button>Pelajari Lebih Lanjut</Button> */}
           </div>
         </div>
       </div>
     </section>
   )
 }
+
+export default AboutSection

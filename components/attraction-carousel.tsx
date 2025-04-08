@@ -19,6 +19,8 @@ import AttractionImg3 from '@/assets/atraksi-3.png'
 import lovedIcon from '@/assets/loved.svg'
 import unlovedIcon from '@/assets/unloved.svg'
 import CalendarIcon from '@/assets/Calender.svg'
+import { FC } from 'react'
+import { AttractionSectionType } from '@/lib/type'
 
 const attractions = [
   {
@@ -71,7 +73,8 @@ const attractions = [
   },
 ]
 
-export default function AttractionCarousel() {
+const AttractionCarousel: FC<AttractionSectionType> = (props) => {
+  const { title, description } = props
   const [currentIndex, setCurrentIndex] = useState(0)
   const [visibleItems, setVisibleItems] = useState(3)
   const [touchStart, setTouchStart] = useState(0)
@@ -148,14 +151,9 @@ export default function AttractionCarousel() {
         <div className="w-full flex flex-row items-center justify-between max-w-[75vw]">
           <div className="text-left mb-10 md:mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-              {/* Jelajahi <span className="text-primary">Destinasi Wisata</span> Kami */}
-              Atraksi/Acara
+              {title}
             </h2>
-            <p className="text-muted-foreground max-w-2xl">
-              Sebagai desa yang masih memegang teguh tradisi leluhur, Desa Manud
-              Jaya memiliki berbagai acara adat yang rutin diselenggarakan
-              sepanjang tahun, di antaranya:
-            </p>
+            <p className="text-muted-foreground max-w-2xl">{description}</p>
           </div>
           <div className="hidden gap-4 md:flex md:flex-row">
             <Button
@@ -284,3 +282,5 @@ export default function AttractionCarousel() {
     </section>
   )
 }
+
+export default AttractionCarousel

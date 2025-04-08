@@ -7,6 +7,8 @@ import Avatar1 from '@/assets/avt-1.png'
 import Avatar2 from '@/assets/avt-2.png'
 import Avatar3 from '@/assets/avt-3.png'
 import Avatar4 from '@/assets/avt.png'
+import { FC } from 'react'
+import { TestimonialSectionType } from '@/lib/type'
 
 type Testimonial = {
   id: number
@@ -17,7 +19,7 @@ type Testimonial = {
   avatar: any
 }
 
-export default function TestimonialSection() {
+const TestimonialSection: FC<TestimonialSectionType> = (props) => {
   const testimonials: Testimonial[] = [
     {
       id: 1,
@@ -143,3 +145,5 @@ export default function TestimonialSection() {
     </section>
   )
 }
+
+export default TestimonialSection
