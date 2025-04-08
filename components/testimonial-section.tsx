@@ -20,6 +20,7 @@ type Testimonial = {
 }
 
 const TestimonialSection: FC<TestimonialSectionType> = (props) => {
+  const { title, description } = props
   const testimonials: Testimonial[] = [
     {
       id: 1,
@@ -67,10 +68,10 @@ const TestimonialSection: FC<TestimonialSectionType> = (props) => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h3 className="text-sm font-medium uppercase tracking-wider mb-4">
-              TESTIMONIALS
+              {title}
             </h3>
             <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">
-              Apa kata mereka tentang kami?
+              {description}
             </h2>
             <Link
               href="#contact"

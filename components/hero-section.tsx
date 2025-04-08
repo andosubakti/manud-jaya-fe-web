@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
 import Image from 'next/image'
 import HeroImage from '@/assets/hero.png'
 import { FC } from 'react'
@@ -32,6 +31,12 @@ const HeroSection: FC<HeroSectionType> = (props) => {
           <Button
             size="lg"
             className="text-base rounded-full p-8 font-bold border-4 border-white/60"
+            onClick={() => {
+              const aboutSection = document.getElementById('about')
+              if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' })
+              }
+            }}
           >
             Pelajari Lebih Lanjut
           </Button>
