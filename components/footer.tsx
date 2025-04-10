@@ -30,6 +30,12 @@ export default function Footer() {
           <div className="space-y-4">
             <nav className="flex flex-col space-y-2">
               <Link
+                href="/informasi"
+                className="hover:text-green-600 transition-colors"
+              >
+                Informasi
+              </Link>
+              <Link
                 href="/budaya"
                 className="hover:text-green-600 transition-colors"
               >

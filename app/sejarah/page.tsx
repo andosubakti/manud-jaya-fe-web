@@ -20,11 +20,12 @@ export default function SejarahPage() {
               }}
             />
             <p className="text-muted-foreground">
-              Nama "Manud Jaya" sendiri memiliki makna yang dalam. "Manud"
-              berasal dari kata dalam bahasa lokal yang berarti "bersatu",
-              sementara "Jaya" berarti "kejayaan". Nama ini mencerminkan harapan
-              pendiri desa untuk menciptakan komunitas yang bersatu dan mencapai
-              kejayaan bersama.
+              Nama &ldquo;Manud Jaya&rdquo; sendiri memiliki makna yang dalam.
+              &ldquo;Manud&rdquo; berasal dari bahasa Sunda yang berarti
+              &ldquo;turun&rdquo;, sedangkan &ldquo;Jaya&rdquo; berarti
+              &ldquo;sukses&rdquo; atau &ldquo;makmur&rdquo;. Nama ini
+              mencerminkan harapan pendiri desa untuk menciptakan komunitas yang
+              bersatu dan mencapai kejayaan bersama.
             </p>
           </CardContent>
         </Card>
