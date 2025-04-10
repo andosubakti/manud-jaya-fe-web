@@ -43,7 +43,7 @@
     --accent-foreground: 60 9.1% 97.8%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 60 9.1% 97.8%;
-    --border: 12 6.5% 15.1%;
+    --border: 12 6.5% 25.1%;
     --input: 12 6.5% 15.1%;
     --ring: 142.4 71.8% 29.2%;
   }
@@ -90,7 +90,8 @@
 }
 
 .mobile-menu-item {
-  animation: fadeIn 0.3s ease forwards, slideIn 0.3s ease forwards;
-  animation-delay: calc(var(--index) * 0.05s);
+  animation: fadeIn 0.3s ease-in-out forwards, slideIn 0.3s ease-in-out forwards;
+  animation-delay: calc(var(--index) * 0.1s);
   opacity: 0;
+  transform: translateY(-20px);
 }

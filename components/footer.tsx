@@ -29,10 +29,16 @@ export default function Footer() {
           {/* Budaya Links */}
           <div className="space-y-4">
             <nav className="flex flex-col space-y-2">
-              <Link href="#" className="">
+              <Link
+                href="/budaya"
+                className="hover:text-green-600 transition-colors"
+              >
                 Budaya
               </Link>
-              <Link href="#" className="">
+              <Link
+                href="/sejarah"
+                className="hover:text-green-600 transition-colors"
+              >
                 Sejarah
               </Link>
             </nav>
@@ -41,10 +47,16 @@ export default function Footer() {
           {/* Paket Wisata Links */}
           <div className="space-y-4">
             <nav className="flex flex-col space-y-2">
-              <Link href="#" className="">
+              <Link
+                href="/paket-wisata"
+                className="hover:text-green-600 transition-colors"
+              >
                 Paket Wisata
               </Link>
-              <Link href="#" className="">
+              <Link
+                href="/atraksi-acara"
+                className="hover:text-green-600 transition-colors"
+              >
                 Atraksi/Acara
               </Link>
             </nav>

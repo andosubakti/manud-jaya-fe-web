@@ -51,10 +51,10 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Beranda', href: '/' },
-    { name: 'Budaya', href: '#about' },
-    { name: 'Sejarah', href: '#attractions' },
-    { name: 'Paket Wisata', href: '#accommodation' },
-    { name: 'Atraksi/Acara', href: '#gallery' },
+    { name: 'Budaya', href: '/budaya' },
+    { name: 'Sejarah', href: '/sejarah' },
+    { name: 'Paket Wisata', href: '/paket-wisata' },
+    { name: 'Atraksi/Acara', href: '/atraksi-acara' },
   ]
 
   return (
