@@ -26,9 +26,10 @@ const AboutSection: FC<AboutSectionType> = (props) => {
           </div>
           <div className="md:w-1/2">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">{title}</h2>
-            <p className="text-muted-foreground mb-6 text-justify">
-              {description}
-            </p>
+            <p
+              className="text-muted-foreground mb-6 text-justify"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
           </div>
         </div>
       </div>

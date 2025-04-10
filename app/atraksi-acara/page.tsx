@@ -125,7 +125,10 @@ export default function AtraksiAcaraPage() {
             </CardHeader>
 
             <CardContent>
-              <p className="text-muted-foreground mb-4">{acara.description}</p>
+              <p
+                className="text-muted-foreground mb-4"
+                dangerouslySetInnerHTML={{ __html: acara.description }}
+              />
 
               <div className="mb-4">
                 <div className="flex items-center mb-2">

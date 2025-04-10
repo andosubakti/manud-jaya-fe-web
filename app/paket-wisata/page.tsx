@@ -95,7 +95,10 @@ export default function PaketWisataPage() {
             </CardHeader>
 
             <CardContent>
-              <p className="text-muted-foreground mb-4">{paket.description}</p>
+              <p
+                className="text-muted-foreground mb-4"
+                dangerouslySetInnerHTML={{ __html: paket.description }}
+              />
 
               <div className="flex justify-between items-center mb-4">
                 <span className="text-sm text-muted-foreground">

@@ -153,7 +153,10 @@ const AttractionCarousel: FC<AttractionSectionType> = (props) => {
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
               {title}
             </h2>
-            <p className="text-muted-foreground max-w-2xl">{description}</p>
+            <p
+              className="text-muted-foreground max-w-2xl"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
           </div>
           <div className="hidden gap-4 md:flex md:flex-row">
             <Button
@@ -225,9 +228,12 @@ const AttractionCarousel: FC<AttractionSectionType> = (props) => {
                       <CardTitle>{attraction.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-muted-foreground">
-                        {attraction.description}
-                      </p>
+                      <p
+                        className="text-muted-foreground"
+                        dangerouslySetInnerHTML={{
+                          __html: attraction.description,
+                        }}
+                      />
                     </CardContent>
                     <CardFooter className="flex flex-row gap-2 items-center">
                       <Image

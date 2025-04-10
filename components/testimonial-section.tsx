@@ -70,9 +70,10 @@ const TestimonialSection: FC<TestimonialSectionType> = (props) => {
             <h3 className="text-sm font-medium uppercase tracking-wider mb-4">
               {title}
             </h3>
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">
-              {description}
-            </h2>
+            <h2
+              className="text-4xl md:text-5xl font-bold mb-8 leading-tight"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
             <Link
               href="#contact"
               className="inline-flex items-center justify-center rounded-full border border-gray-300 bg-secondary px-6 py-3 text-base font-medium shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
@@ -105,7 +106,12 @@ const TestimonialSection: FC<TestimonialSectionType> = (props) => {
               </div>
             </div>
 
-            <p className="mb-6">{testimonials[activeTestimonial].content}</p>
+            <p
+              className="mb-6"
+              dangerouslySetInnerHTML={{
+                __html: testimonials[activeTestimonial].content,
+              }}
+            />
           </div>
         </div>
 

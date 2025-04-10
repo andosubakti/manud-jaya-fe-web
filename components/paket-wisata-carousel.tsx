@@ -166,7 +166,10 @@ const PaketWisataCarousel: FC<PaketWisataSectionType> = (props) => {
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
               {title}
             </h2>
-            <p className="text-muted-foreground max-w-2xl">{description}</p>
+            <p
+              className="text-muted-foreground max-w-2xl"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
           </div>
           <div className="hidden gap-4 md:flex md:flex-row">
             <Button
@@ -226,9 +229,10 @@ const PaketWisataCarousel: FC<PaketWisataSectionType> = (props) => {
                       <CardTitle>{paket.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-muted-foreground">
-                        {paket.description}
-                      </p>
+                      <p
+                        className="text-muted-foreground"
+                        dangerouslySetInnerHTML={{ __html: paket.description }}
+                      />
                     </CardContent>
                     <CardFooter className="flex flex-row gap-2 items-center">
                       <label className="text-gray-600">

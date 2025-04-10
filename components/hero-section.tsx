@@ -24,9 +24,10 @@ const HeroSection: FC<HeroSectionType> = (props) => {
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
           {title}
         </h1>
-        <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 text-gray-100">
-          {description}
-        </p>
+        <p
+          className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 text-gray-100"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button
             size="lg"
