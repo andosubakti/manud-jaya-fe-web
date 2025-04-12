@@ -221,7 +221,7 @@ const pendidikanData = {
 
 export default function InformasiPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background px-12">
       {/* Hero Section with Title and Breadcrumb */}
       <section className="pt-20 pb-8 bg-background">
         <div className="container mx-auto px-4 flex flex-col gap-4">
@@ -238,9 +238,55 @@ export default function InformasiPage() {
       </section>
 
       {/* Image Gallery Section */}
-      <section className="py-8">
+      <section className="py-8 overflow-hidden">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-4 gap-4">
+          {/* Mobile Gallery */}
+          <div className="flex md:hidden overflow-x-auto gap-4 pb-4 snap-x snap-mandatory -mx-4">
+            <div className="relative aspect-[4/3] w-[85vw] shrink-0 snap-center ml-4">
+              <Image
+                src={mockImages.mainImage}
+                alt="Main Gallery"
+                fill
+                className="object-cover hover:scale-110 transition-transform duration-300 rounded-lg"
+                priority
+              />
+            </div>
+            <div className="relative aspect-[4/3] w-[85vw] shrink-0 snap-center">
+              <Image
+                src={mockImages.leftTop}
+                alt="Gallery Left Top"
+                fill
+                className="object-cover hover:scale-110 transition-transform duration-300 rounded-lg"
+              />
+            </div>
+            <div className="relative aspect-[4/3] w-[85vw] shrink-0 snap-center">
+              <Image
+                src={mockImages.leftBottom}
+                alt="Gallery Left Bottom"
+                fill
+                className="object-cover hover:scale-110 transition-transform duration-300 rounded-lg"
+              />
+            </div>
+            <div className="relative aspect-[4/3] w-[85vw] shrink-0 snap-center">
+              <Image
+                src={mockImages.rightTop}
+                alt="Gallery Right Top"
+                fill
+                className="object-cover hover:scale-110 transition-transform duration-300 rounded-lg"
+              />
+            </div>
+            <div className="relative aspect-[4/3] w-[85vw] shrink-0 snap-center mr-8">
+              <Image
+                src={mockImages.rightBottom}
+                alt="Gallery Right Bottom"
+                fill
+                className="object-cover hover:scale-110 transition-transform duration-300 rounded-lg"
+              />
+            </div>
+          </div>
+
+          {/* Desktop Gallery */}
+          <div className="hidden md:grid grid-cols-4 gap-4">
             {/* Left Column */}
             <div className="col-span-1 space-y-4">
               <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
@@ -300,7 +346,7 @@ export default function InformasiPage() {
       {/* Content Section */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="mx-auto">
             <h2 className="text-3xl font-bold mb-6">Desa Wisata Manud Jaya</h2>
             <div className="prose max-w-none space-y-6">
               <p className="text-muted-foreground">
@@ -499,7 +545,7 @@ export default function InformasiPage() {
                 {demographicData.bahasa.map((bahasa) => (
                   <div
                     key={bahasa}
-                    className="bg-[rgb(99,102,241)] text-white px-8 py-4 rounded-full font-medium"
+                    className="bg-[rgb(99,102,241)] text-white px-8 py-4 rounded-lg text-center font-medium"
                   >
                     {bahasa}
                   </div>
