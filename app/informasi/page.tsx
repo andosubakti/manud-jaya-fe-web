@@ -221,7 +221,7 @@ const pendidikanData = {
 
 export default function InformasiPage() {
   return (
-    <main className="min-h-screen bg-background px-12">
+    <main className="min-h-screen bg-background px-2 md:px-12">
       {/* Hero Section with Title and Breadcrumb */}
       <section className="pt-20 pb-8 bg-background">
         <div className="container mx-auto px-4 flex flex-col gap-4">
