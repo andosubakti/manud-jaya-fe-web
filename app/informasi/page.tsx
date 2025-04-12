@@ -412,7 +412,7 @@ export default function InformasiPage() {
               <h3 className="text-xl font-semibold mb-6 text-center">
                 Persentase Gender
               </h3>
-              <div className="flex items-center justify-center gap-16">
+              <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
                 <div className="w-[200px] h-[200px] relative">
                   <Doughnut
                     data={genderDistributionData}
@@ -458,7 +458,7 @@ export default function InformasiPage() {
               <h3 className="text-xl font-semibold mb-6 text-center">
                 Tingkat Pendidikan
               </h3>
-              <div className="flex items-center justify-center gap-16">
+              <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
                 <div className="w-[200px] h-[200px] relative">
                   <Doughnut data={pendidikanData} options={pendidikanOptions} />
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -468,7 +468,7 @@ export default function InformasiPage() {
                     </span>
                   </div>
                 </div>
-                <div className="space-y-2">
+                <div className="grid grid-cols-2 md:grid-cols-1 gap-3 w-full max-w-sm">
                   {demographicData.tingkatPendidikan.map((item, index) => (
                     <div key={item.tingkat} className="flex items-center gap-3">
                       <div
