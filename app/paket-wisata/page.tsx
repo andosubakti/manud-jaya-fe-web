@@ -1,5 +1,7 @@
 import React from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
+import { Breadcrumb } from '@/components/breadcrumb'
 import {
   Card,
   CardHeader,
@@ -12,144 +14,130 @@ export default function PaketWisataPage() {
   const paketWisata = [
     {
       id: 1,
-      title: 'Paket Wisata Budaya',
+      title: 'Jelajah Alam Manud',
       description:
-        'Jelajahi kekayaan budaya Desa Manud Jaya dengan mengunjungi berbagai situs budaya, menyaksikan pertunjukan tradisional, dan belajar kerajinan tangan dari para pengrajin lokal.',
+        'Trekking ringan menyusuri perbukitan, hutan lindung, dan area persawahan dengan pemandu lokal.',
       duration: '1 Hari',
-      price: 'Rp 150.000',
-      image: '/images/paket-budaya.jpg',
-      features: [
-        'Kunjungan ke situs budaya',
-        'Pertunjukan tari tradisional',
-        'Workshop kerajinan tangan',
-        'Makan siang dengan kuliner lokal',
-      ],
+      time: '(08.00 - 15.00 WIB)',
+      price: 'Rp150.000/orang',
+      image: 'https://picsum.photos/id/110/800/600',
     },
     {
       id: 2,
-      title: 'Paket Wisata Alam',
+      title: 'Dari Biji ke Cangkir: Wisata Kopi Lokal',
       description:
-        'Nikmati keindahan alam Desa Manud Jaya dengan berbagai aktivitas outdoor seperti trekking, berkemah, dan menikmati pemandangan alam yang menakjubkan.',
-      duration: '2 Hari 1 Malam',
-      price: 'Rp 350.000',
-      image: '/images/paket-alam.jpg',
-      features: [
-        'Trekking ke destinasi alam',
-        'Berkemah di alam terbuka',
-        'Makan pagi, siang, dan malam',
-        'Pemandu wisata profesional',
-      ],
+        'Belajar mengenal proses kopi dari kebun sampai cangkir sambil mencicipi kopi khas Manud Jaya.',
+      duration: '3 Jam',
+      price: 'Rp120.000/orang',
+      image: 'https://picsum.photos/id/766/800/600',
     },
     {
       id: 3,
-      title: 'Paket Wisata Kuliner',
+      title: 'Belajar Membatik di Kampung Seni',
       description:
-        'Rasakan cita rasa autentik kuliner Desa Manud Jaya dengan mengunjungi berbagai warung makan tradisional, belajar memasak masakan lokal, dan menikmati berbagai hidangan khas.',
-      duration: '1 Hari',
-      price: 'Rp 200.000',
-      image: '/images/paket-kuliner.jpg',
-      features: [
-        'Kunjungan ke warung makan tradisional',
-        'Kelas memasak masakan lokal',
-        'Makan siang dan malam',
-        'Oleh-oleh kuliner lokal',
-      ],
+        'Workshop membatik tradisional bersama pengrajin lokal, cocok untuk anak-anak hingga dewasa.',
+      duration: '2 Jam',
+      price: 'Rp100.000/orang',
+      image: 'https://picsum.photos/id/603/800/600',
     },
     {
       id: 4,
-      title: 'Paket Wisata Lengkap',
+      title: 'Menginap di Rumah Warga (Live-in Experience)',
       description:
-        'Nikmati pengalaman lengkap di Desa Manud Jaya dengan menggabungkan wisata budaya, alam, dan kuliner dalam satu paket wisata yang komprehensif.',
-      duration: '3 Hari 2 Malam',
-      price: 'Rp 750.000',
-      image: '/images/paket-lengkap.jpg',
-      features: [
-        'Semua aktivitas dari paket budaya',
-        'Semua aktivitas dari paket alam',
-        'Semua aktivitas dari paket kuliner',
-        'Akomodasi selama 2 malam',
-      ],
+        'Tinggal dan beraktivitas bersama keluarga lokal, merasakan langsung kehidupan pedesaan.',
+      duration: '2 Hari 1 Malam',
+      price: 'Rp250.000/orang/malam',
+      image: 'https://picsum.photos/id/164/800/600',
+    },
+    {
+      id: 5,
+      title: 'Kelas Masak Tradisional Sunda',
+      description:
+        'Belajar memasak makanan khas Sunda menggunakan bahan dari kebun lokal.',
+      duration: '2 Jam',
+      price: 'Rp90.000/orang',
+      image: 'https://picsum.photos/id/292/800/600',
+    },
+    {
+      id: 6,
+      title: 'Panen Sayur dan Buah Sendiri',
+      description:
+        'Petik sayur dan buah langsung dari kebun, bisa dibawa pulang sebagai oleh-oleh sehat.',
+      duration: '1,5 Jam',
+      price: 'Rp70.000/orang',
+      image: 'https://picsum.photos/id/493/800/600',
     },
   ]
 
   return (
-    <div className="container mx-auto py-12 px-4 pt-24">
-      <h1 className="text-4xl font-bold mb-8 text-center">
-        Paket Wisata Desa Manud Jaya
-      </h1>
+    <main className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative h-[300px] flex items-center justify-center">
+        <Image
+          src="https://picsum.photos/id/513/1920/1080"
+          alt="Hero Paket Wisata"
+          fill
+          className="object-cover brightness-50"
+          priority
+        />
+        <h1 className="text-4xl md:text-5xl font-bold text-white relative z-10">
+          Paket Wisata
+        </h1>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {paketWisata.map((paket) => (
-          <Card key={paket.id}>
-            <div className="relative h-64 w-full">
-              <div className="absolute inset-0 bg-muted flex items-center justify-center">
-                <span className="text-muted-foreground">
-                  Gambar {paket.title}
-                </span>
-              </div>
-            </div>
-
-            <CardHeader>
-              <CardTitle>{paket.title}</CardTitle>
-            </CardHeader>
-
-            <CardContent>
-              <p
-                className="text-muted-foreground mb-4"
-                dangerouslySetInnerHTML={{ __html: paket.description }}
-              />
-
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-sm text-muted-foreground">
-                  Durasi: {paket.duration}
-                </span>
-                <span className="text-lg font-bold text-primary">
-                  {paket.price}
-                </span>
-              </div>
-
-              <h3 className="font-semibold mb-2">Fitur Paket:</h3>
-              <ul className="list-disc list-inside mb-4 text-muted-foreground">
-                {paket.features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
-            </CardContent>
-
-            <CardFooter className="flex justify-between">
-              <Link
-                href={`/paket-wisata/${paket.id}`}
-                className="text-primary hover:underline"
-              >
-                Detail Paket
-              </Link>
-              <Link
-                href="/kontak"
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
-              >
-                Pesan Sekarang
-              </Link>
-            </CardFooter>
-          </Card>
-        ))}
+      {/* Breadcrumb */}
+      <div className="container mx-auto px-4 py-4 flex flex-row justify-center">
+        <Breadcrumb
+          items={[
+            { label: 'Beranda', href: '/' },
+            { label: 'Paket Wisata', href: '/paket-wisata' },
+          ]}
+        />
       </div>
 
-      <Card className="mt-12">
-        <CardHeader>
-          <CardTitle>Informasi Tambahan</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground mb-4">
-            Semua paket wisata dapat disesuaikan dengan kebutuhan dan preferensi
-            Anda. Silakan hubungi kami untuk informasi lebih lanjut atau untuk
-            membuat paket wisata yang disesuaikan.
-          </p>
-          <p className="text-muted-foreground">
-            Harga yang tercantum adalah harga per orang untuk minimal 2 orang.
-            Harga dapat berubah tanpa pemberitahuan sebelumnya.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+      {/* Filter Section */}
+      <div className="container mx-auto px-4 md:px-16 mb-8">
+        <select className="px-4 py-2 border rounded-md bg-background">
+          <option>Termurah - Termahal</option>
+          <option>Termahal - Termurah</option>
+          <option>Durasi Terpendek</option>
+          <option>Durasi Terpanjang</option>
+        </select>
+      </div>
+
+      {/* Packages Grid */}
+      <div className="container mx-auto px-4 md:px-16 pb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {paketWisata.map((paket) => (
+            <div key={paket.id} className="bg-card rounded-3xl overflow-hidden">
+              <div className="relative aspect-[4/3]">
+                <Image
+                  src={paket.image}
+                  alt={paket.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-8 space-y-6">
+                <h3 className="text-2xl font-semibold">{paket.title}</h3>
+
+                <div className="text-2xl font-semibold">{paket.price}</div>
+
+                <p className="text-muted-foreground text-lg">
+                  {paket.description} - {paket.duration}
+                  {paket.time && (
+                    <span className="block mt-1">{paket.time}</span>
+                  )}
+                </p>
+
+                <button className="w-full bg-[#82C341] text-white py-4 rounded-full text-lg font-medium hover:bg-[#82C341]/90 transition-colors">
+                  Pesan Sekarang
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
   )
 }
