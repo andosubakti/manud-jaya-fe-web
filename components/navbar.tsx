@@ -154,14 +154,14 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <div
+            {/* <div
               className="pt-8 mobile-menu-item"
               style={{ '--index': navLinks.length } as React.CSSProperties}
             >
               <Button className="w-full h-12 text-base" onClick={closeMenu}>
                 Pesan Sekarang
               </Button>
-            </div>
+            </div> */}
           </div>
 
           {/* Explicit Close Button at the bottom */}

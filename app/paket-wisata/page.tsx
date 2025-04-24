@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react'
 import Image from 'next/image'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { useRouter } from 'next/navigation'
 
 interface PaketWisata {
   id: number
@@ -15,6 +16,7 @@ interface PaketWisata {
 }
 
 export default function PaketWisataPage() {
+  const router = useRouter()
   const [sortBy, setSortBy] = useState('title')
   const [selectedPaket, setSelectedPaket] = useState<PaketWisata | null>(null)
 
@@ -97,6 +99,10 @@ export default function PaketWisataPage() {
     })
   }, [paketWisata, sortBy])
 
+  const handlePesan = (paketTitle: string) => {
+    router.push(`/paket-wisata/pesan?paket=${encodeURIComponent(paketTitle)}`)
+  }
+
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -167,7 +173,7 @@ export default function PaketWisataPage() {
                   className="w-full bg-[#82C341] text-white py-3 rounded-full hover:bg-[#82C341]/90 transition-colors text-lg font-medium"
                   onClick={(e) => {
                     e.stopPropagation()
-                    // Handle booking logic here
+                    handlePesan(paket.title)
                   }}
                 >
                   Pesan Sekarang
@@ -216,7 +222,10 @@ export default function PaketWisataPage() {
                     <div className="text-2xl font-bold text-[#0F172A] mb-6">
                       {selectedPaket.price}
                     </div>
-                    <button className="w-full bg-[#82C341] text-white py-3 rounded-full text-base font-medium hover:bg-[#82C341]/90 transition-colors">
+                    <button
+                      className="w-full bg-[#82C341] text-white py-3 rounded-full text-base font-medium hover:bg-[#82C341]/90 transition-colors"
+                      onClick={() => handlePesan(selectedPaket.title)}
+                    >
                       Pesan Sekarang
                     </button>
                   </div>
@@ -253,7 +262,10 @@ export default function PaketWisataPage() {
                     {selectedPaket.price}
                   </div>
 
-                  <button className="w-full bg-[#82C341] text-white py-4 rounded-full text-lg font-medium hover:bg-[#82C341]/90 transition-colors">
+                  <button
+                    className="w-full bg-[#82C341] text-white py-4 rounded-full text-lg font-medium hover:bg-[#82C341]/90 transition-colors"
+                    onClick={() => handlePesan(selectedPaket.title)}
+                  >
                     Pesan Sekarang
                   </button>
                 </div>
