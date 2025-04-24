@@ -2,11 +2,23 @@
 import React, { useState, useMemo } from 'react'
 import Image from 'next/image'
 import { Breadcrumb } from '@/components/breadcrumb'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+
+interface PaketWisata {
+  id: number
+  title: string
+  description: string
+  duration: string
+  time?: string
+  price: string
+  image: string
+}
 
 export default function PaketWisataPage() {
   const [sortBy, setSortBy] = useState('title')
+  const [selectedPaket, setSelectedPaket] = useState<PaketWisata | null>(null)
 
-  const paketWisata = [
+  const paketWisata: PaketWisata[] = [
     {
       id: 1,
       title: 'Jelajah Alam Manud',
@@ -128,28 +140,36 @@ export default function PaketWisataPage() {
       <div className="container mx-auto px-4 md:px-16 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {sortedPaketWisata.map((paket) => (
-            <div key={paket.id} className="bg-card rounded-3xl overflow-hidden">
+            <div
+              key={paket.id}
+              className="bg-white overflow-hidden cursor-pointer transition-transform hover:scale-[1.02]"
+              onClick={() => setSelectedPaket(paket)}
+            >
               <div className="relative aspect-[4/3]">
                 <Image
                   src={paket.image}
                   alt={paket.title}
                   fill
-                  className="object-cover"
+                  className="object-cover rounded-t-xl"
                 />
               </div>
-              <div className="p-8 space-y-6">
-                <h3 className="text-2xl font-semibold">{paket.title}</h3>
-
-                <div className="text-2xl font-semibold">{paket.price}</div>
-
-                <p className="text-muted-foreground text-lg">
-                  {paket.description} - {paket.duration}
-                  {paket.time && (
-                    <span className="block mt-1">{paket.time}</span>
-                  )}
+              <div className="p-6">
+                <h3 className="text-2xl font-bold text-[#0F172A] mb-2">
+                  {paket.title}
+                </h3>
+                <p className="text-lg font-medium text-[#0F172A] mb-4">
+                  {paket.price}
                 </p>
-
-                <button className="w-full bg-[#82C341] text-white py-4 rounded-full text-lg font-medium hover:bg-[#82C341]/90 transition-colors">
+                <p className="text-[#64748B] mb-4 min-h-[60px]">
+                  {paket.description}
+                </p>
+                <button
+                  className="w-full bg-[#82C341] text-white py-3 rounded-full hover:bg-[#82C341]/90 transition-colors text-lg font-medium"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    // Handle booking logic here
+                  }}
+                >
                   Pesan Sekarang
                 </button>
               </div>
@@ -157,6 +177,101 @@ export default function PaketWisataPage() {
           ))}
         </div>
       </div>
+
+      {/* Detail Dialog */}
+      <Dialog
+        open={!!selectedPaket}
+        onOpenChange={() => setSelectedPaket(null)}
+      >
+        <DialogContent className="max-w-[1200px] md:p-12 overflow-hidden md:rounded-[40px] bg-white">
+          {selectedPaket && (
+            <div className="flex flex-col md:flex-row md:gap-12">
+              {/* Mobile Layout */}
+              <div className="block md:hidden w-full">
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src={selectedPaket.image}
+                    alt={selectedPaket.title}
+                    fill
+                    className="object-cover rounded-xl"
+                    priority
+                  />
+                </div>
+                <div className="p-6">
+                  <div className="text-[#94A3B8] text-base mb-1">
+                    Paket Wisata
+                  </div>
+                  <h2 className="text-2xl font-bold text-[#0F172A] mb-4">
+                    {selectedPaket.title}
+                  </h2>
+                  <p className="text-[#64748B] text-base mb-4">
+                    {selectedPaket.description}
+                  </p>
+                  <div className="text-[#64748B] text-base mb-1">
+                    {selectedPaket.duration}
+                    {selectedPaket.time && <span> {selectedPaket.time}</span>}
+                  </div>
+                  <div className="mt-6">
+                    <div className="text-[#94A3B8] text-base mb-1">Harga</div>
+                    <div className="text-2xl font-bold text-[#0F172A] mb-6">
+                      {selectedPaket.price}
+                    </div>
+                    <button className="w-full bg-[#82C341] text-white py-3 rounded-full text-base font-medium hover:bg-[#82C341]/90 transition-colors">
+                      Pesan Sekarang
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop Layout */}
+              <div className="hidden md:block md:w-[55%]">
+                <DialogTitle className="sr-only">
+                  Detail Paket Wisata {selectedPaket.title}
+                </DialogTitle>
+                <div className="text-[#94A3B8] text-lg">Paket Wisata</div>
+                <h2 className="text-[40px] leading-[1.2] font-bold text-[#0F172A] mt-2 mb-8">
+                  {selectedPaket.title}
+                </h2>
+
+                <div className="bg-[#F8FAFC] rounded-3xl p-8">
+                  <p className="text-[#64748B] text-lg leading-[1.8]">
+                    {selectedPaket.description}
+                  </p>
+                  <div className="mt-4 text-[#64748B] text-lg">
+                    <span className="font-medium">
+                      {selectedPaket.duration}
+                    </span>
+                    {selectedPaket.time && (
+                      <div className="mt-1">{selectedPaket.time}</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <div className="text-[#94A3B8] text-lg">Harga</div>
+                  <div className="text-[40px] leading-[1.2] font-bold text-[#0F172A] mt-2 mb-8">
+                    {selectedPaket.price}
+                  </div>
+
+                  <button className="w-full bg-[#82C341] text-white py-4 rounded-full text-lg font-medium hover:bg-[#82C341]/90 transition-colors">
+                    Pesan Sekarang
+                  </button>
+                </div>
+              </div>
+
+              <div className="hidden md:block md:w-[45%] relative aspect-[4/3]">
+                <Image
+                  src={selectedPaket.image}
+                  alt={selectedPaket.title}
+                  fill
+                  className="object-cover rounded-3xl"
+                  priority
+                />
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </main>
   )
 }
