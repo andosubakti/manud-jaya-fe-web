@@ -1,223 +1,279 @@
+'use client'
 import React from 'react'
-import Link from 'next/link'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card'
+import Image from 'next/image'
+import { Breadcrumb } from '@/components/breadcrumb'
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
+
+interface Event {
+  date: Date
+  title: string
+}
+
+interface CalendarTileProperties {
+  date: Date
+  view: string
+}
 
 export default function AtraksiAcaraPage() {
-  const atraksiAcara = [
+  const mainAttractions = [
     {
-      id: 1,
-      title: 'Festival Budaya Tahunan',
+      title: 'Bukit Purnama',
       description:
-        'Festival budaya tahunan yang menampilkan berbagai pertunjukan seni tradisional, pameran kerajinan tangan, dan berbagai aktivitas budaya lainnya.',
-      date: 'Setiap bulan Agustus',
-      location: 'Lapangan Desa Manud Jaya',
-      image: '/images/festival-budaya.jpg',
-      highlights: [
-        'Pertunjukan tari tradisional',
-        'Pameran kerajinan tangan',
-        'Kuliner tradisional',
-        'Lomba-lomba budaya',
-      ],
+        'Terletak di sisi timur desa. Bukit dengan panorama pegunungan yang indah, menjadi spot favorit untuk menyaksikan matahari terbit. Pengunjung dapat menikmati udara segar pegunungan dan keindahan alam sekitar.',
+      openHours: 'Setiap hari pukul 05.00 - 18.00',
+      price: 'Rp10.000/orang',
+      image: 'https://picsum.photos/id/110/800/600',
     },
     {
-      id: 2,
-      title: 'Pertunjukan Wayang Kulit',
+      title: 'Air Terjun Manud',
       description:
-        'Pertunjukan wayang kulit yang menampilkan cerita-cerita dari epos Mahabharata dan Ramayana dengan iringan musik gamelan tradisional.',
-      date: 'Setiap bulan purnama',
-      location: 'Pendopo Desa',
-      image: '/images/wayang-kulit.jpg',
-      highlights: [
-        'Dalang profesional',
-        'Musik gamelan live',
-        'Snack tradisional',
-        'Interaksi dengan dalang',
-      ],
+        'Air terjun alami yang bersumber di pegunungan Manud. Selain untuk wisata, air terjun ini juga dimanfaatkan untuk irigasi sawah di sekitar desa. Pengunjung dapat menikmati gemercik air dan kesejukan alam.',
+      openHours: 'Setiap hari pukul 08.00 - 17.00',
+      price: 'Rp15.000/orang',
+      image: 'https://picsum.photos/id/145/800/600',
     },
     {
-      id: 3,
-      title: 'Workshop Kerajinan Tangan',
+      title: 'Galeri Batik Lereng Manud',
       description:
-        'Workshop yang mengajarkan berbagai teknik kerajinan tangan tradisional seperti membatik, membuat gerabah, dan menganyam.',
-      date: 'Setiap akhir pekan',
-      location: 'Sanggar Kerajinan Desa',
-      image: '/images/workshop-kerajinan.jpg',
-      highlights: [
-        'Pembelajaran langsung dari pengrajin',
-        'Materi dan alat disediakan',
-        'Hasil kerajinan bisa dibawa pulang',
-        'Sertifikat keikutsertaan',
-      ],
+        'Berlokasi di pusat Desa Manud. Galeri ini menampilkan hasil karya batik khas Manud dengan motif yang terinspirasi dari alam sekitar. Pengunjung dapat melihat proses pembuatan dan mencoba membatik.',
+      openHours: 'Senin-Sabtu pukul 09.00 - 16.30',
+      price: 'Rp25.000/orang (termasuk workshop)',
+      image: 'https://picsum.photos/id/175/800/600',
     },
     {
-      id: 4,
-      title: 'Karnaval Budaya',
+      title: 'Sentra Anyaman Tunas Lestari',
       description:
-        'Karnaval budaya yang menampilkan berbagai kostum tradisional, musik, dan tarian dari berbagai daerah di Indonesia.',
-      date: 'Setiap Hari Kemerdekaan (17 Agustus)',
-      location: 'Jalan utama Desa',
-      image: '/images/karnaval-budaya.jpg',
-      highlights: [
-        'Kostum tradisional',
-        'Musik dan tarian',
-        'Floats dekoratif',
-        'Hadiah untuk peserta terbaik',
-      ],
-    },
-    {
-      id: 5,
-      title: 'Pameran Seni Rupa',
-      description:
-        'Pameran seni rupa yang menampilkan karya-karya seniman lokal dan nasional dengan tema budaya dan kehidupan desa.',
-      date: 'Setiap 3 bulan sekali',
-      location: 'Galeri Seni Desa',
-      image: '/images/pameran-seni.jpg',
-      highlights: [
-        'Karya seniman lokal dan nasional',
-        'Diskusi seni',
-        'Workshop melukis',
-        'Auction karya seni',
-      ],
-    },
-    {
-      id: 6,
-      title: 'Festival Kuliner',
-      description:
-        'Festival kuliner yang menampilkan berbagai hidangan tradisional dan modern dari berbagai daerah di Indonesia.',
-      date: 'Setiap bulan Desember',
-      location: 'Area Pasar Desa',
-      image: '/images/festival-kuliner.jpg',
-      highlights: [
-        'Berbagai stand kuliner',
-        'Demo memasak',
-        'Kontes memasak',
-        'Oleh-oleh kuliner',
-      ],
+        'Terletak di bagian Selatan desa. Sentra kerajinan anyaman bambu yang masih aktif memproduksi berbagai produk kerajinan. Pengunjung dapat melihat proses pembuatan dan membeli produk langsung.',
+      openHours: 'Senin-Sabtu pukul 08.00 - 16.00',
+      price: 'Gratis (harga sesuai produk yang dibeli)',
+      image: 'https://picsum.photos/id/180/800/600',
     },
   ]
 
-  return (
-    <div className="container mx-auto py-12 px-4 pt-24">
-      <h1 className="text-4xl font-bold mb-8 text-center">
-        Atraksi dan Acara di Desa Manud Jaya
-      </h1>
+  const eventsList = [
+    {
+      title: 'Festival Seribu Lampion',
+      description:
+        'Acara tahunan untuk menyemarakkan malam tahun baru dengan melepaskan ribuan lampion ke langit malam. Menjadi simbol harapan dan doa dari masyarakat.',
+      date: 'Tanggal & Waktu:',
+      time: 'Sabtu, 31 Desember 2024 | 19.00 - 21.00 WIB',
+      location: 'Lapangan Utama Desa Manud Jaya',
+      image: 'https://picsum.photos/id/219/800/600',
+    },
+    {
+      title: 'Parade Budaya Manud',
+      description:
+        'Parade budaya tahunan yang menampilkan kesenian tradisional, pertunjukan tarian, dan pawai pengantin dengan busana adat. Mengangkat tema "Budaya Hidup".',
+      date: 'Tanggal & Waktu:',
+      time: 'Sabtu, 25 Mei 2024 | 08.00 - 17.00 WIB',
+      location: 'Sepanjang Jalan Pusat Desa Manud Jaya',
+      image: 'https://picsum.photos/id/237/800/600',
+    },
+    {
+      title: 'Workshop Membatik Lereng',
+      description:
+        'Workshop membatik khas motif lereng yang dipandu langsung oleh pengrajin senior. Peserta akan belajar teknik dasar membatik dan dapat membawa pulang hasil karyanya.',
+      date: 'Tanggal & Waktu:',
+      time: 'Minggu, 19 Mei 2024 | 09.00 - 16.00 WIB',
+      location: 'Galeri Batik Lereng Manud',
+      image: 'https://picsum.photos/id/145/800/600',
+    },
+    {
+      title: 'Pasar Budaya Malam Minggu',
+      description:
+        'Pasar malam mingguan yang menampilkan berbagai kerajinan tradisional, kuliner khas, dan pertunjukan seni budaya oleh masyarakat.',
+      date: 'Tanggal & Waktu:',
+      time: 'Setiap Sabtu | 17.00 - 22.00 WIB',
+      location: 'Alun-Alun Desa Manud Jaya',
+      image: 'https://picsum.photos/id/292/800/600',
+    },
+    {
+      title: 'Ritual Sedekah Bumi',
+      description:
+        'Ritual adat tahunan sebagai wujud syukur kepada alam. Dipimpin oleh tetua desa dan diikuti seluruh warga dengan doa bersama, genduri, dan pertunjukan wayang semalam suntuk.',
+      date: 'Tanggal & Waktu:',
+      time: 'Minggu, 1 September 2024 | 07.00 - 20.00 WIB',
+      location: 'Pendopo Desa Manud Jaya',
+      image: 'https://picsum.photos/id/171/800/600',
+    },
+    {
+      title: 'Panggung Seni Remaja Desa',
+      description:
+        'Panggung pertunjukan seni oleh remaja desa yang menampilkan kreasi modern dengan unsur tradisional. Musik, teater, tarian dan kreasi seni akan ditampilkan.',
+      date: 'Tanggal & Waktu:',
+      time: 'Jumat, 14 Juni 2024 | 15.00 - 21.00 WIB',
+      location: 'Balai Budaya Manud Jaya',
+      image: 'https://picsum.photos/id/225/800/600',
+    },
+  ]
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {atraksiAcara.map((acara) => (
-          <Card key={acara.id}>
-            <div className="relative h-48 w-full">
-              <div className="absolute inset-0 bg-muted flex items-center justify-center">
-                <span className="text-muted-foreground">
-                  Gambar {acara.title}
-                </span>
+  const calendarEvents: Event[] = [
+    {
+      date: new Date(2024, 4, 20), // May 20, 2024
+      title: 'Acara Syukuran Desa',
+    },
+    {
+      date: new Date(2024, 4, 25), // May 25, 2024
+      title: 'Festival Tari Adat',
+    },
+  ]
+
+  // Array of selected dates
+  const selectedDates = calendarEvents.map((event) => event.date)
+
+  const tileClassName = ({
+    date,
+    view,
+  }: CalendarTileProperties): string | null => {
+    if (view === 'month') {
+      return selectedDates.some(
+        (selectedDate) =>
+          selectedDate.getDate() === date.getDate() &&
+          selectedDate.getMonth() === date.getMonth() &&
+          selectedDate.getFullYear() === date.getFullYear(),
+      )
+        ? 'event-date'
+        : null
+    }
+    return null
+  }
+
+  return (
+    <main className="min-h-screen bg-background pt-24">
+      <div className="container mx-auto px-4">
+        <h1 className="text-[32px] font-bold mt-2">Budaya Desa Manud Jaya</h1>
+
+        {/* Breadcrumb */}
+        <div className="container mx-auto px-0 py-4 flex flex-row justify-start">
+          <Breadcrumb
+            items={[
+              { label: 'Beranda', href: '/' },
+              { label: 'Budaya', href: '/budaya' },
+            ]}
+          />
+        </div>
+
+        {/* Main Attractions */}
+        <section className="mt-8">
+          <h2 className="text-[28px] font-bold mb-6">
+            Atraksi Utama di Desa Wisata
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {mainAttractions.map((attraction, index) => (
+              <div key={index}>
+                <div className="relative aspect-square rounded-t-xl overflow-hidden mb-3">
+                  <Image
+                    src={attraction.image}
+                    alt={attraction.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <h3 className="text-[16px] font-semibold mb-2">
+                  {attraction.title}
+                </h3>
+                <p className="text-[#64748B] text-[14px] mb-4 leading-relaxed">
+                  {attraction.description}
+                </p>
+                <div className="text-[14px]">
+                  <div className="font-medium">Jam Operasional:</div>
+                  <div className="text-[#64748B]">{attraction.openHours}</div>
+                  <div className="text-[#64748B]">
+                    Harga: {attraction.price}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Events */}
+        <section className="mt-16">
+          <h2 className="text-[28px] font-bold mb-6">
+            Acara & Event di Desa Wisata
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {eventsList.map((event, index) => (
+              <div key={index} className="rounded-xl p-6">
+                <div className="relative aspect-[4/3] rounded-t-xl overflow-hidden mb-4">
+                  <Image
+                    src={event.image}
+                    alt={event.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <h3 className="text-[16px] font-semibold mb-2">
+                  {event.title}
+                </h3>
+                <p className="text-[#64748B] text-[14px] mb-4 leading-relaxed">
+                  {event.description}
+                </p>
+                <div className="text-[14px]">
+                  <div className="font-medium">{event.date}</div>
+                  <div className="text-[#64748B]">{event.time}</div>
+                  <div className="text-[#64748B] mt-1">{event.location}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Calendar */}
+        <section className="mt-16 mb-16">
+          <div className="flex items-center gap-2 mb-6">
+            <h2 className="text-[28px] font-bold">
+              Kalender Event Desa Manud Jaya
+            </h2>
+          </div>
+
+          <div className="bg-white rounded-2xl p-8 shadow-sm">
+            <div className="flex flex-col lg:flex-row gap-8">
+              <div className="w-full lg:w-[280px]">
+                <div className="flex items-center gap-2 mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-gray-600"
+                  >
+                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  <span className="text-[20px] font-medium">May 2024</span>
+                </div>
+                <Calendar
+                  value={new Date(2024, 4, 1)}
+                  tileClassName={tileClassName}
+                  showNavigation={false}
+                  formatShortWeekday={(locale, date) =>
+                    ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][date.getDay()]
+                  }
+                />
+              </div>
+              <div className="lg:flex-1 lg:pl-8 lg:border-l border-gray-100">
+                <div className="text-[#64748B] space-y-2 text-[15px]">
+                  {calendarEvents.map((event, index) => (
+                    <div key={index} className="text-[#6B7280]">
+                      {event.date.getDate()} May 2024:{' '}
+                      <span className="text-[#374151]">{event.title}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-
-            <CardHeader>
-              <CardTitle>{acara.title}</CardTitle>
-            </CardHeader>
-
-            <CardContent>
-              <p
-                className="text-muted-foreground mb-4"
-                dangerouslySetInnerHTML={{ __html: acara.description }}
-              />
-
-              <div className="mb-4">
-                <div className="flex items-center mb-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-muted-foreground mr-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <span className="text-sm text-muted-foreground">
-                    {acara.date}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-muted-foreground mr-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                  <span className="text-sm text-muted-foreground">
-                    {acara.location}
-                  </span>
-                </div>
-              </div>
-
-              <h3 className="font-semibold mb-2">Highlights:</h3>
-              <ul className="list-disc list-inside mb-4 text-muted-foreground text-sm">
-                {acara.highlights.map((highlight, index) => (
-                  <li key={index}>{highlight}</li>
-                ))}
-              </ul>
-            </CardContent>
-
-            <CardFooter className="flex justify-between">
-              <Link
-                href={`/atraksi-acara/${acara.id}`}
-                className="text-primary hover:underline text-sm"
-              >
-                Detail Acara
-              </Link>
-              <Link
-                href="/kontak"
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors text-sm"
-              >
-                Daftar Sekarang
-              </Link>
-            </CardFooter>
-          </Card>
-        ))}
+          </div>
+        </section>
       </div>
-
-      <Card className="mt-12">
-        <CardHeader>
-          <CardTitle>Informasi Tambahan</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground mb-4">
-            Semua acara dan atraksi dapat berubah jadwalnya tanpa pemberitahuan
-            sebelumnya. Silakan hubungi kami untuk informasi terbaru tentang
-            jadwal acara.
-          </p>
-          <p className="text-muted-foreground">
-            Beberapa acara mungkin memerlukan pendaftaran terlebih dahulu.
-            Silakan periksa detail acara untuk informasi lebih lanjut.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+    </main>
   )
 }
