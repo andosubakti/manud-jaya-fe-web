@@ -147,11 +147,7 @@
 }
 
 .react-calendar__navigation {
-  display: none !important;
-}
-
-.react-calendar__month-view__days {
-  gap: 2px !important;
+  display: flex !important;
 }
 
 /* Remove default highlight for selected date */

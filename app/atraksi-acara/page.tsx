@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { Breadcrumb } from '@/components/breadcrumb'
 import Calendar from 'react-calendar'
@@ -122,19 +122,49 @@ export default function AtraksiAcaraPage() {
   // Array of selected dates
   const selectedDates = calendarEvents.map((event) => event.date)
 
+  const [currentDate, setCurrentDate] = useState<Date>(new Date())
+
+  const handleDateChange = (value: any) => {
+    if (value instanceof Date) {
+      setCurrentDate(value)
+    }
+  }
+
+  const handleActiveStartDateChange = ({
+    activeStartDate,
+  }: {
+    activeStartDate: Date | null
+  }) => {
+    if (activeStartDate) {
+      setCurrentDate(activeStartDate)
+    }
+  }
+
   const tileClassName = ({
     date,
     view,
   }: CalendarTileProperties): string | null => {
     if (view === 'month') {
-      return selectedDates.some(
+      const today = new Date()
+      const isToday =
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+
+      const isEventDate = selectedDates.some(
         (selectedDate) =>
           selectedDate.getDate() === date.getDate() &&
           selectedDate.getMonth() === date.getMonth() &&
           selectedDate.getFullYear() === date.getFullYear(),
       )
-        ? 'event-date'
-        : null
+
+      if (isToday && isEventDate) {
+        return 'event-date today'
+      } else if (isToday) {
+        return 'today'
+      } else if (isEventDate) {
+        return 'event-date'
+      }
     }
     return null
   }
@@ -249,14 +279,22 @@ export default function AtraksiAcaraPage() {
                     <line x1="8" y1="2" x2="8" y2="6" />
                     <line x1="3" y1="10" x2="21" y2="10" />
                   </svg>
-                  <span className="text-[20px] font-medium">May 2024</span>
+                  <span className="text-[20px] font-medium">
+                    {currentDate.toLocaleString('id-ID', { month: 'long' })}{' '}
+                    {currentDate.getFullYear()}
+                  </span>
                 </div>
                 <Calendar
-                  value={new Date(2024, 4, 1)}
+                  value={currentDate}
+                  onChange={handleDateChange}
+                  onActiveStartDateChange={handleActiveStartDateChange}
                   tileClassName={tileClassName}
-                  showNavigation={false}
+                  showNavigation={true}
+                  calendarType="iso8601"
                   formatShortWeekday={(locale, date) =>
-                    ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][date.getDay()]
+                    ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'][
+                      (date.getDay() + 6) % 7
+                    ]
                   }
                 />
               </div>
@@ -264,7 +302,9 @@ export default function AtraksiAcaraPage() {
                 <div className="text-[#64748B] space-y-2 text-[15px]">
                   {calendarEvents.map((event, index) => (
                     <div key={index} className="text-[#6B7280]">
-                      {event.date.getDate()} May 2024:{' '}
+                      {event.date.getDate()}{' '}
+                      {event.date.toLocaleString('id-ID', { month: 'long' })}{' '}
+                      {event.date.getFullYear()}:{' '}
                       <span className="text-[#374151]">{event.title}</span>
                     </div>
                   ))}
@@ -274,6 +314,33 @@ export default function AtraksiAcaraPage() {
           </div>
         </section>
       </div>
+
+      <style jsx global>{`
+        .event-date {
+          background-color: #fef3c7 !important;
+          color: #92400e !important;
+          font-weight: 600 !important;
+        }
+
+        .today {
+          background-color: #e5e7eb !important;
+          color: #1f2937 !important;
+          font-weight: 600 !important;
+        }
+
+        .event-date.today {
+          background-color: #fef3c7 !important;
+          color: #92400e !important;
+          font-weight: 600 !important;
+          border: 2px solid #1f2937 !important;
+        }
+
+        .react-calendar {
+          width: 100% !important;
+          border: none !important;
+          font-family: inherit !important;
+        }
+      `}</style>
     </main>
   )
 }
