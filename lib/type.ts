@@ -90,8 +90,20 @@ export interface PaketWisataSectionType extends BaseSection {
   tours?: TourType[]
 }
 
+export interface TestimonialType {
+  id: number
+  documentId: string
+  title: string
+  testimoni: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  photo_profile: BannerType | null
+}
+
 export interface TestimonialSectionType extends BaseSection {
   __component: 'homepage.homepage-section-5'
+  testimonials?: TestimonialType[]
 }
 
 export type ContentPageItem =

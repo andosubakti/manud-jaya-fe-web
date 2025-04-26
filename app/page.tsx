@@ -6,12 +6,13 @@ import AboutSection from '@/components/about-section'
 import TestimonialSection from '@/components/testimonial-section'
 import PaketWisataCarousel from '@/components/paket-wisata-carousel'
 import { get } from '@/lib/helper'
-import { ContentPageItem, TourType } from '@/lib/type'
+import { ContentPageItem, TourType, TestimonialType } from '@/lib/type'
 
 export default function Home() {
   const [contentPage, setContentPage] = useState<ContentPageItem[]>([])
   const [events, setEvents] = useState<any[]>([])
   const [tours, setTours] = useState<TourType[]>([])
+  const [testimonials, setTestimonials] = useState<TestimonialType[]>([])
 
   const fetchHomepageData = async () => {
     try {
@@ -53,10 +54,28 @@ export default function Home() {
     }
   }
 
+  const fetchTestimonialsData = async (
+    page: number = 1,
+    pageSize: number = 100,
+  ) => {
+    try {
+      const res = await get(
+        `/testimonis?populate[photo_profile][populate]=*&sort=updatedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+      )
+      if (res?.data) {
+        setTestimonials(res?.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch testimonials:', error)
+      return null
+    }
+  }
+
   useEffect(() => {
     fetchHomepageData()
     fetchEventsData()
     fetchToursData()
+    fetchTestimonialsData()
   }, [])
 
   return (
@@ -76,7 +95,13 @@ export default function Home() {
               <PaketWisataCarousel key={index} {...section} tours={tours} />
             )
           case 'homepage.homepage-section-5':
-            return <TestimonialSection key={index} {...section} />
+            return (
+              <TestimonialSection
+                key={index}
+                {...section}
+                testimonials={testimonials}
+              />
+            )
           default:
             return null
         }

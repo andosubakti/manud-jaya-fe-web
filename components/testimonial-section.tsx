@@ -10,55 +10,8 @@ import Avatar4 from '@/assets/avt.png'
 import { FC } from 'react'
 import { TestimonialSectionType } from '@/lib/type'
 
-type Testimonial = {
-  id: number
-  name: string
-  position: string
-  company: string
-  content: string
-  avatar: any
-}
-
 const TestimonialSection: FC<TestimonialSectionType> = (props) => {
-  const { title, description } = props
-  const testimonials: Testimonial[] = [
-    {
-      id: 1,
-      name: "Isabelle O'Conner",
-      position: 'BA',
-      company: 'Robin',
-      content:
-        'Kunjungan saya ke Desa Wisata Manud Jaya benar-benar tak terlupakan. Air terjunnya sangat menakjubkan dengan aliran deras yang menyegarkan, dikelilingi pepohonan hijau dan udara sejuk yang menenangkan.',
-      avatar: Avatar1,
-    },
-    {
-      id: 2,
-      name: 'Mara Hilpert',
-      position: 'Web Designer',
-      company: '',
-      content:
-        'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin sodales ultrices nulla blandit volutpat.',
-      avatar: Avatar2,
-    },
-    {
-      id: 3,
-      name: 'Mara Hilpert',
-      position: 'Web Designer',
-      company: '',
-      content:
-        'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo.',
-      avatar: Avatar3,
-    },
-    {
-      id: 4,
-      name: 'Mara Hilpert',
-      position: 'Web Designer',
-      company: '',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      avatar: Avatar4,
-    },
-  ]
+  const { title, description, testimonials = [] } = props
 
   const [activeTestimonial, setActiveTestimonial] = useState<number>(0)
 
@@ -87,29 +40,25 @@ const TestimonialSection: FC<TestimonialSectionType> = (props) => {
               <div className="relative h-16 w-16 overflow-hidden rounded-full">
                 <Image
                   src={
-                    testimonials[activeTestimonial].avatar || '/placeholder.svg'
+                    testimonials[activeTestimonial]?.photo_profile?.url ||
+                    '/placeholder.svg'
                   }
-                  alt={testimonials[activeTestimonial].name}
+                  alt={testimonials[activeTestimonial]?.title || 'Testimonial'}
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="ml-4">
                 <h4 className="text-lg font-semibold">
-                  {testimonials[activeTestimonial].name}
+                  {testimonials[activeTestimonial]?.title}
                 </h4>
-                <p className="">
-                  {testimonials[activeTestimonial].position}
-                  {testimonials[activeTestimonial].company &&
-                    ` at ${testimonials[activeTestimonial].company}`}
-                </p>
               </div>
             </div>
 
             <p
               className="mb-6"
               dangerouslySetInnerHTML={{
-                __html: testimonials[activeTestimonial].content,
+                __html: testimonials[activeTestimonial]?.testimoni || '',
               }}
             />
           </div>
@@ -128,8 +77,8 @@ const TestimonialSection: FC<TestimonialSectionType> = (props) => {
             >
               <div className="relative h-12 w-12 overflow-hidden rounded-full">
                 <Image
-                  src={testimonial.avatar || '/placeholder.svg'}
-                  alt={testimonial.name}
+                  src={testimonial.photo_profile?.url || '/placeholder.svg'}
+                  alt={testimonial.title}
                   fill
                   className="object-cover"
                 />
@@ -142,8 +91,7 @@ const TestimonialSection: FC<TestimonialSectionType> = (props) => {
                   index === activeTestimonial ? 'font-medium' : 'text-gray-500'
                 }`}
               >
-                <p className="font-medium">{testimonial.name}</p>
-                <p>{testimonial.position}</p>
+                <p className="font-medium">{testimonial.title}</p>
               </div>
             </button>
           ))}
