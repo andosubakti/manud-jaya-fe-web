@@ -11,7 +11,7 @@ const demografiText = `
 `
 
 const AboutSection: FC<AboutSectionType> = (props) => {
-  const { title, description } = props
+  const { title, description, image } = props
   const [activeSlide, setActiveSlide] = useState(0)
 
   const slides = [
@@ -23,7 +23,7 @@ const AboutSection: FC<AboutSectionType> = (props) => {
       <div className="md:w-1/2">
         <div className="relative">
           <Image
-            src={AboutImg}
+            src={image.url}
             alt="Desa Wisata Manud Jaya"
             width={800}
             height={600}

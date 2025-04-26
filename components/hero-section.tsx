@@ -1,17 +1,16 @@
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import HeroImage from '@/assets/hero.png'
 import { FC } from 'react'
 import { HeroSectionType } from '@/lib/type'
 
 const HeroSection: FC<HeroSectionType> = (props) => {
-  const { title, description } = props
+  const { title, description, banner } = props
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-20 md:pt-0 overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={HeroImage}
+          src={banner.url}
           alt="Desa Wisata Background"
           fill
           priority

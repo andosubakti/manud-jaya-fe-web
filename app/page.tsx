@@ -15,7 +15,7 @@ export default function Home() {
 
   const fetchHomepageData = async () => {
     try {
-      const res = await get('/homepage?populate=*')
+      const res = await get('/homepage?populate[content_page][populate]=*')
       if (res?.data) {
         setContentPage(res?.data?.content_page)
       }
