@@ -167,9 +167,15 @@ const PaketWisataCarousel: FC<PaketWisataSectionType> = (props) => {
                     key={tour.id}
                     className="w-full md:w-[336px] flex-shrink-0"
                   >
-                    <div className="relative h-[100vw] w-[100vw] md:h-[256px] md:w-[336px] rounded-xl">
+                    <div className="relative aspect-[4/3] md:h-[256px] md:w-[280px] rounded-xl">
                       <Image
-                        src={tour.pictures?.[0]?.url || '/placeholder.svg'}
+                        src={
+                          tour.pictures?.[0]?.files?.[0]?.formats?.small?.url ||
+                          tour.pictures?.[0]?.files?.[0]?.formats?.thumbnail
+                            ?.url ||
+                          tour.pictures?.[0]?.files?.[0]?.url ||
+                          '/placeholder.svg'
+                        }
                         alt={tour.title}
                         fill
                         className="object-cover rounded-xl"
