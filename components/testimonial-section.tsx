@@ -3,10 +3,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import Avatar1 from '@/assets/avt-1.png'
-import Avatar2 from '@/assets/avt-2.png'
-import Avatar3 from '@/assets/avt-3.png'
-import Avatar4 from '@/assets/avt.png'
 import { FC } from 'react'
 import { TestimonialSectionType } from '@/lib/type'
 
