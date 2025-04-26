@@ -23,8 +23,25 @@ export interface AttractionSectionType extends BaseSection {
   __component: 'homepage.homepage-section-3'
 }
 
+export interface TourType {
+  id: number
+  documentId: string
+  title: string
+  subtitle: string | null
+  price: number
+  duration_days: number
+  duration_hours: number
+  description: string
+  short_description: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  pictures: any[]
+}
+
 export interface PaketWisataSectionType extends BaseSection {
   __component: 'homepage.homepage-section-4'
+  tours?: TourType[]
 }
 
 export interface TestimonialSectionType extends BaseSection {

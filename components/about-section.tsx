@@ -16,7 +16,10 @@ const AboutSection: FC<AboutSectionType> = (props) => {
 
   const slides = [
     // Slide 1: About (default)
-    <div className="flex flex-col-reverse md:flex-row items-center gap-12">
+    <div
+      key={1}
+      className="flex flex-col-reverse md:flex-row items-center gap-12"
+    >
       <div className="md:w-1/2">
         <div className="relative">
           <Image
@@ -37,7 +40,7 @@ const AboutSection: FC<AboutSectionType> = (props) => {
       </div>
     </div>,
     // Slide 2: Demografi
-    <div className="flex flex-col md:flex-row items-center gap-12">
+    <div key={2} className="flex flex-col md:flex-row items-center gap-12">
       <div className="md:w-1/2 w-full mb-6 md:mb-0">
         <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
           <Image

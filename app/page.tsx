@@ -6,11 +6,12 @@ import AboutSection from '@/components/about-section'
 import TestimonialSection from '@/components/testimonial-section'
 import PaketWisataCarousel from '@/components/paket-wisata-carousel'
 import { get } from '@/lib/helper'
-import { ContentPageItem } from '@/lib/type'
+import { ContentPageItem, TourType } from '@/lib/type'
 
 export default function Home() {
   const [contentPage, setContentPage] = useState<ContentPageItem[]>([])
   const [events, setEvents] = useState<any[]>([])
+  const [tours, setTours] = useState<TourType[]>([])
 
   const fetchHomepageData = async () => {
     try {
@@ -38,9 +39,24 @@ export default function Home() {
     }
   }
 
+  const fetchToursData = async (page: number = 1, pageSize: number = 100) => {
+    try {
+      const res = await get(
+        `/tours?populate[pictures][populate]=*&sort=updatedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+      )
+      if (res?.data) {
+        setTours(res?.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch tours:', error)
+      return null
+    }
+  }
+
   useEffect(() => {
     fetchHomepageData()
     fetchEventsData()
+    fetchToursData()
   }, [])
 
   return (
@@ -56,7 +72,9 @@ export default function Home() {
               <AttractionCarousel key={index} {...section} events={events} />
             )
           case 'homepage.homepage-section-4':
-            return <PaketWisataCarousel key={index} {...section} />
+            return (
+              <PaketWisataCarousel key={index} {...section} tours={tours} />
+            )
           case 'homepage.homepage-section-5':
             return <TestimonialSection key={index} {...section} />
           default:
