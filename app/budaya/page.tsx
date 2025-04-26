@@ -1,8 +1,172 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { get } from '@/lib/helper'
 import React from 'react'
 import Image from 'next/image'
 import { Breadcrumb } from '@/components/breadcrumb'
 
+interface MediaFormat {
+  ext: string
+  url: string
+  hash: string
+  mime: string
+  name: string
+  path: null
+  size: number
+  width: number
+  height: number
+  sizeInBytes: number
+}
+
+interface Media {
+  id: number
+  documentId: string
+  name: string
+  alternativeText: null
+  caption: null
+  width: number
+  height: number
+  formats: {
+    large: MediaFormat
+    small: MediaFormat
+    medium: MediaFormat
+    thumbnail: MediaFormat
+  }
+  hash: string
+  ext: string
+  mime: string
+  size: number
+  url: string
+  previewUrl: null
+  provider: string
+  provider_metadata: null
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  related: Array<{
+    __type: string
+    id: number
+    documentId: string
+    title: string
+    body: string
+    createdAt: string
+    updatedAt: string
+    publishedAt: string
+  }>
+}
+
+interface Culture {
+  id: number
+  documentId: string
+  title: string
+  body: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  media: Media[]
+}
+
+interface Kesenian {
+  id: number
+  documentId: string
+  title: string
+  body: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  media: Media[]
+}
+
+interface BudayaPage {
+  id: number
+  documentId: string
+  title: string
+  body: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  media: Media[]
+}
+
+interface Kuliner {
+  id: number
+  documentId: string
+  title: string
+  body: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  media: Media[]
+}
+
 export default function BudayaPage() {
+  const [cultures, setCultures] = useState<Culture[]>([])
+  const [kesenians, setKesenians] = useState<Kesenian[]>([])
+  const [budayaPage, setBudayaPage] = useState<BudayaPage | null>(null)
+  const [kuliners, setKuliners] = useState<Kuliner[]>([])
+
+  const fetchCulturesData = async () => {
+    try {
+      const res = await get(
+        '/cultures?sort=updatedAt:desc&pagination[page]=1&pagination[pageSize]=100&populate[media][populate]=*',
+      )
+      if (res?.data) {
+        setCultures(res.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch cultures:', error)
+      return null
+    }
+  }
+
+  const fetchKeseniansData = async () => {
+    try {
+      const res = await get(
+        '/kesenians?sort=updatedAt:desc&pagination[page]=1&pagination[pageSize]=100&populate[media][populate]=*',
+      )
+      if (res?.data) {
+        setKesenians(res.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch kesenians:', error)
+      return null
+    }
+  }
+
+  const fetchBudayaPageData = async () => {
+    try {
+      const res = await get('/budaya-page?populate[media][populate]=*')
+      if (res?.data) {
+        setBudayaPage(res.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch budaya page:', error)
+      return null
+    }
+  }
+
+  const fetchKulinersData = async () => {
+    try {
+      const res = await get(
+        '/kuliners?sort=updatedAt:desc&pagination[page]=1&pagination[pageSize]=100&populate[media][populate]=*',
+      )
+      if (res?.data) {
+        setKuliners(res.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch kuliners:', error)
+      return null
+    }
+  }
+
+  useEffect(() => {
+    fetchCulturesData()
+    fetchKeseniansData()
+    fetchBudayaPageData()
+    fetchKulinersData()
+  }, [])
+
   return (
     <main className="min-h-screen bg-background pt-24">
       <div className="container mx-auto px-4">
@@ -21,30 +185,28 @@ export default function BudayaPage() {
         {/* Hero Section */}
         <div className="mt-12">
           <h2 className="text-[40px] font-bold leading-tight mb-8">
-            Menjaga Warisan Leluhur, Menghidupkan Tradisi
+            {budayaPage?.title ||
+              'Menjaga Warisan Leluhur, Menghidupkan Tradisi'}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start text-justify">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <div className="space-y-6">
-              <p className="text-[#64748B] text-lg leading-relaxed">
-                Selamat datang di Desa Manud Jaya, permata budaya di tengah
-                pedesaan Indonesia. Tak hanya indah secara alam, desa ini juga
-                kaya akan tradisi dan warisan budaya yang masih lestari. Lewat
-                halaman ini, Anda diajak menjelajahi seni tari, musik
-                tradisional, kerajinan khas, hingga upacara adat yang sarat
-                makna—semua menjadi cerminan kearifan lokal yang dijunjung
-                tinggi masyarakat.
-              </p>
-              <p className="text-[#64748B] text-lg leading-relaxed">
-                Desa Manud Jaya mencerminkan keharmonisan antara kehidupan
-                masyarakat dan budaya turun-temurun. Meski zaman terus
-                berkembang, warganya tetap teguh melestarikan tradisi dan nilai
-                luhur sebagai identitas dan kebanggaan bersama.
-              </p>
+              <div
+                className="text-[#64748B] text-lg leading-relaxed prose prose-lg max-w-none prose-p:mb-4"
+                dangerouslySetInnerHTML={{ __html: budayaPage?.body || '' }}
+              />
             </div>
-            <div className="relative h-[300px] md:h-full rounded-2xl overflow-hidden">
+            <div className="relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden">
               <Image
-                src="https://picsum.photos/id/225/800/600"
-                alt="Tari Tradisional"
+                src={
+                  budayaPage?.media[0]?.formats?.large?.url ||
+                  budayaPage?.media[0]?.url ||
+                  'https://picsum.photos/id/225/800/600'
+                }
+                alt={
+                  budayaPage?.media[0]?.alternativeText ||
+                  budayaPage?.title ||
+                  'Budaya Desa Manud Jaya'
+                }
                 fill
                 className="object-cover"
                 priority
@@ -58,57 +220,38 @@ export default function BudayaPage() {
           <h2 className="text-[28px] font-bold mb-6">
             Adat Istiadat dan Tradisi
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                image: 'https://picsum.photos/id/219/800/800',
-                title: 'Malam Seribu Lampion',
-                description:
-                  'Tradisi tahunan di mana ribuan lampion diterangi bersamaan di langit malam sebagai simbol harapan dan doa dari masyarakat.',
-                time: 'Malam bulan purnama pertama setiap tahun',
-              },
-              {
-                image: 'https://picsum.photos/id/171/800/800',
-                title: 'Upacara Adat Sedekah Bumi',
-                description:
-                  'Ritual syukuran yang dilaksanakan dan diikuti oleh seluruh penduduk desa untuk berdoa atas hasil panen yang melimpah. Acara ini diisi dengan berbagai ritual adat dan persembahan kepada leluhur.',
-                time: 'Setiap awal musim panen, pada bulan Agustus',
-              },
-              {
-                image: 'https://picsum.photos/id/146/800/800',
-                title: 'Festival Tari Topeng',
-                description:
-                  'Pertunjukan seni tari dengan kostumasi dan penggunaan topeng adat. Setiap tari menceritakan masing-masing karakter dan cerita rakyat yang berbeda-beda.',
-                time:
-                  'Setiap bulan April, bertepatan dengan peringatan hari jadi desa',
-              },
-              {
-                image: 'https://picsum.photos/id/292/800/800',
-                title: 'Pasar Budaya Minggu Pagi',
-                description:
-                  'Pasar tradisional yang menawarkan berbagai kerajinan dan kuliner khas, serta ditambah budaya dan edukasi yang terpadu untuk pengunjung.',
-                time: 'Setiap hari Minggu pagi',
-              },
-            ].map((item, index) => (
-              <div key={index}>
-                <div className="relative aspect-square rounded-2xl overflow-hidden mb-3">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-[16px] font-semibold mb-2">{item.title}</h3>
-                <p className="text-[#64748B] text-[14px] mb-2 leading-relaxed">
-                  {item.description}
-                </p>
-                <div className="text-[14px]">
-                  <div className="font-medium">Waktu Pelaksanaan:</div>
-                  <div className="text-[#64748B]">{item.time}</div>
-                </div>
+          <div className="relative">
+            <div className="overflow-x-auto pb-4 -mx-4 px-4">
+              <div className="flex gap-6 min-w-max">
+                {cultures.map((culture) => (
+                  <div
+                    key={culture.id}
+                    className="w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
+                  >
+                    <div className="relative aspect-square rounded-2xl overflow-hidden mb-3">
+                      <Image
+                        src={
+                          culture.media[0]?.formats?.medium?.url ||
+                          'https://picsum.photos/id/225/800/600'
+                        }
+                        alt={culture.media[0]?.alternativeText || culture.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-[16px] font-semibold mb-2">
+                        {culture.title}
+                      </h3>
+                      <div
+                        className="text-[#64748B] text-[14px] mb-2 leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: culture.body }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </section>
 
@@ -117,112 +260,80 @@ export default function BudayaPage() {
           <h2 className="text-[28px] font-bold mb-6">
             Kesenian dan Kerajinan Lokal
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                image: 'https://picsum.photos/id/225/800/800',
-                title: 'Tari Rengga Manud',
-                description:
-                  'Tari tradisional yang menggambarkan keindahan, keanggunan, dan kekuatan para penari dalam bertutur kisah melalui doa dalam bentuk gerakan di setiap penampilannya.',
-                location: 'Pendopo Desa Manud Jaya',
-              },
-              {
-                image: 'https://picsum.photos/id/164/800/800',
-                title: 'Gamelan Wira Swara',
-                description:
-                  'Ansambel musik tradisional khas Desa Manud Jaya yang dimainkan oleh para seniman lokal dengan alat-alat gamelan seperti bonang, saron, dan gong yang telah berusia ratusan tahun.',
-                location: 'Sanggar Seni Manud Jaya',
-              },
-              {
-                image: 'https://picsum.photos/id/175/800/800',
-                title: 'Anyaman Tunas Lestari',
-                description:
-                  'Kerajinan dengan bahan alur anyaman dan bahan ramah yang diambil dari bambu lokal. Produk ini dibuat dan dijual langsung oleh pengrajin lokal.',
-                location: 'Sanggar Kerajinan Desa Manud Jaya',
-              },
-              {
-                image: 'https://picsum.photos/id/145/800/800',
-                title: 'Batik Lereng Manud',
-                description:
-                  'Batik khas Desa Manud Jaya dengan motif yang menggambarkan gunung, sungai, padi dan detail lainnya. Proses pembuatannya masih menggunakan teknik tradisional.',
-                location: 'Galeri Batik Lereng Jaya Manud',
-              },
-            ].map((item, index) => (
-              <div key={index}>
-                <div className="relative aspect-square rounded-2xl overflow-hidden mb-3">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-[16px] font-semibold mb-2">{item.title}</h3>
-                <p className="text-[#64748B] text-[14px] mb-2 leading-relaxed">
-                  {item.description}
-                </p>
-                <div className="text-[14px]">
-                  <div className="font-medium">Lokasi/Tempat Pentas:</div>
-                  <div className="text-[#64748B]">{item.location}</div>
-                </div>
+          <div className="relative">
+            <div className="overflow-x-auto pb-4 -mx-4 px-4">
+              <div className="flex gap-6 min-w-max">
+                {kesenians.map((kesenian) => (
+                  <div
+                    key={kesenian.id}
+                    className="w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
+                  >
+                    <div className="relative aspect-square rounded-2xl overflow-hidden mb-3">
+                      <Image
+                        src={
+                          kesenian.media[0]?.formats?.medium?.url ||
+                          kesenian.media[0]?.url ||
+                          'https://picsum.photos/id/225/800/600'
+                        }
+                        alt={
+                          kesenian.media[0]?.alternativeText || kesenian.title
+                        }
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-[16px] font-semibold mb-2">
+                        {kesenian.title}
+                      </h3>
+                      <div
+                        className="text-[#64748B] text-[14px] mb-2 leading-relaxed prose prose-sm max-w-none"
+                        dangerouslySetInnerHTML={{ __html: kesenian.body }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </section>
 
         {/* Kuliner Khas Desa */}
         <section className="mt-16 mb-16">
           <h2 className="text-[28px] font-bold mb-6">Kuliner Khas Desa</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                image: 'https://picsum.photos/id/306/800/800',
-                title: 'Nasi Gulih Lereng',
-                description:
-                  'Nasi putih khas desa yang disajikan dengan sambal dan sayuran sunnah. Makanan ini menjadi menu wajib saat acara adat berlangsung.',
-                location: 'Warung Bu Darmi di Jalan Rawa',
-              },
-              {
-                image: 'https://picsum.photos/id/431/800/800',
-                title: 'Wedang Pandan Seruni',
-                description:
-                  'Minuman hangat tradisional yang terbuat dari air rebusan pandan jawa dan rempah-rempah pilihan yang menyegarkan dan menghangatkan.',
-                location: 'Warung Wedang Mbak Nanung',
-              },
-              {
-                image: 'https://picsum.photos/id/493/800/800',
-                title: 'Tiwul Manud Jaya',
-                description:
-                  'Olahan singkong kering yang diubah dan diolah dengan teknik padi dan dibumbui dengan rempah-rempah tradisional yang menyehatkan.',
-                location: 'Toko Jaya Tradisional di Jalan Pasar',
-              },
-              {
-                image: 'https://picsum.photos/id/312/800/800',
-                title: 'Keripik Daun Singkong Sari Rasa',
-                description:
-                  'Keripik renyah dari daun singkong yang digoreng dengan tepung khas Manud Jaya dan diberi bumbu rahasia turun-temurun dari Pak Karta.',
-                location: 'Toko Oleh-Oleh Manud di Jalan Raya',
-              },
-            ].map((item, index) => (
-              <div key={index}>
-                <div className="relative aspect-square rounded-2xl overflow-hidden mb-3">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-[16px] font-semibold mb-2">{item.title}</h3>
-                <p className="text-[#64748B] text-[14px] mb-2 leading-relaxed">
-                  {item.description}
-                </p>
-                <div className="text-[14px]">
-                  <div className="font-medium">Tempat Penjual:</div>
-                  <div className="text-[#64748B]">{item.location}</div>
-                </div>
+          <div className="relative">
+            <div className="overflow-x-auto pb-4 -mx-4 px-4">
+              <div className="flex gap-6 min-w-max">
+                {kuliners.map((kuliner) => (
+                  <div
+                    key={kuliner.id}
+                    className="w-[300px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
+                  >
+                    <div className="relative aspect-square rounded-2xl overflow-hidden mb-3">
+                      <Image
+                        src={
+                          kuliner.media[0]?.formats?.large?.url ||
+                          kuliner.media[0]?.url ||
+                          'https://picsum.photos/id/225/800/600'
+                        }
+                        alt={kuliner.media[0]?.alternativeText || kuliner.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-[16px] font-semibold mb-2">
+                        {kuliner.title}
+                      </h3>
+                      <div
+                        className="text-[#64748B] text-[14px] mb-2 leading-relaxed prose prose-sm max-w-none prose-p:mb-2 prose-strong:font-semibold prose-strong:text-[#1E293B]"
+                        dangerouslySetInnerHTML={{ __html: kuliner.body }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </section>
       </div>

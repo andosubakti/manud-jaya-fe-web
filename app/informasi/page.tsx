@@ -89,10 +89,6 @@ interface AgeDemography {
   publishedAt: string
 }
 
-interface AgeDemographyResponse {
-  data: AgeDemography[]
-}
-
 // Update interface for occupation demographics to match exact API response
 interface OccupationDemography {
   id: number
@@ -104,10 +100,6 @@ interface OccupationDemography {
   publishedAt: string
 }
 
-interface OccupationDemographyResponse {
-  data: OccupationDemography[]
-}
-
 // Update interface for education demographics to match exact API response
 interface EducationDemography {
   id: number
@@ -117,10 +109,6 @@ interface EducationDemography {
   createdAt: string
   updatedAt: string
   publishedAt: string
-}
-
-interface EducationDemographyResponse {
-  data: EducationDemography[]
 }
 
 interface InfoPageData {
