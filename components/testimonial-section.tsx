@@ -28,7 +28,7 @@ const TestimonialSection: FC<TestimonialSectionType> = (props) => {
       position: 'BA',
       company: 'Robin',
       content:
-        'An enim nullam tempor gravida donec enim congue magna at pretium purus pretium ligula rutrum luctus risusd diam eget risus varius blandit sit amet non magna.',
+        'Kunjungan saya ke Desa Wisata Manud Jaya benar-benar tak terlupakan. Air terjunnya sangat menakjubkan dengan aliran deras yang menyegarkan, dikelilingi pepohonan hijau dan udara sejuk yang menenangkan.',
       avatar: Avatar1,
     },
     {
