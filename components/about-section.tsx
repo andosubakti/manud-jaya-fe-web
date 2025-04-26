@@ -70,7 +70,7 @@ const AboutSection: FC<AboutSectionType> = (props) => {
     <section id="about" className="py-20 bg-secondary/30 relative">
       <div className="container mx-auto px-4 min-h-[500px] flex flex-col items-center justify-center relative">
         {/* Arrow Controls at top right */}
-        <div className="w-full flex justify-end md:justify-center md:ml-36 items-center mb-4">
+        <div className="w-full flex justify-end md:justify-center md:pl-36 items-center mb-4">
           <div className="flex gap-2 bg-white/80 rounded-full p-1 shadow-md">
             <button
               aria-label="Sebelumnya"

@@ -10,6 +10,8 @@ import { ContentPageItem } from '@/lib/type'
 
 export default function Home() {
   const [contentPage, setContentPage] = useState<ContentPageItem[]>([])
+  const [events, setEvents] = useState<any[]>([])
+
   const fetchHomepageData = async () => {
     try {
       const res = await get('/homepage?populate=*')
@@ -21,9 +23,26 @@ export default function Home() {
       return null
     }
   }
+
+  const fetchEventsData = async (page: number = 1, pageSize: number = 100) => {
+    try {
+      const res = await get(
+        `/events?populate[picture][populate]=*&sort=updatedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+      )
+      if (res?.data) {
+        setEvents(res?.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch events:', error)
+      return null
+    }
+  }
+
   useEffect(() => {
     fetchHomepageData()
+    fetchEventsData()
   }, [])
+
   return (
     <div className="flex flex-col min-h-screen" id="content-homepage">
       {contentPage.map((section, index) => {
@@ -33,7 +52,9 @@ export default function Home() {
           case 'homepage.homepage-section-2':
             return <AboutSection key={index} {...section} />
           case 'homepage.homepage-section-3':
-            return <AttractionCarousel key={index} {...section} />
+            return (
+              <AttractionCarousel key={index} {...section} events={events} />
+            )
           case 'homepage.homepage-section-4':
             return <PaketWisataCarousel key={index} {...section} />
           case 'homepage.homepage-section-5':

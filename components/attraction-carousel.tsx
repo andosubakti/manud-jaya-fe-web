@@ -22,59 +22,37 @@ import CalendarIcon from '@/assets/Calender.svg'
 import { FC } from 'react'
 import { AttractionSectionType } from '@/lib/type'
 
-const attractions = [
-  {
-    id: 1,
-    title: 'Air Terjun Sejahtera',
-    description:
-      'Sebuah tradisi tahunan yang dilakukan sebagai ungkapan rasa syukur atas hasil panen yang melimpah. Acara ini biasanya diisi dengan doa bersama, pertunjukan kesenian, dan makan bersama warga desa.',
-    image: AttractionImg1,
-    location: '2 km dari pusat desa',
-  },
-  {
-    id: 2,
-    title: 'Festival Budaya Manud Jaya',
-    description:
-      'Acara ini menghadirkan berbagai pertunjukan seni tradisional seperti tari-tarian khas desa, wayang kulit, dan musik gamelan yang dilaksanakan malam sembari bercengkrama dengan seluruh warga',
-    image: AttractionImg2,
-    location: '5 km dari pusat desa',
-  },
-  {
-    id: 3,
-    title: 'Ritual Bersih Desa & Pelestarian Air Terjun',
-    description:
-      'Bentuk penghormatan terhadap alam dan sumber daya air, masyarakat desa menggelar ritual tahunan yang mencakup pembersihan lingkungan desa, sungai, dan Air Terjun Sumber Sejahtera, yang menjadi ikon desa. Acara ini juga meliputi sesajen sebagai simbol rasa syukur, doa bersama, serta pertunjukan seni tradisional di sekitar air terjun.',
-    image: AttractionImg3,
-    location: 'Pusat desa',
-  },
-  {
-    id: 4,
-    title: 'Pesta Panen Raya',
-    description:
-      'Perayaan besar yang menampilkan lomba memasak makanan tradisional, pameran kerajinan tangan, dan kirab budaya.',
-    image: AttractionImg1,
-    location: '3 km dari pusat desa',
-  },
-  {
-    id: 5,
-    title: 'Tradisi Malam Seribu Lampion',
-    description:
-      'Sebuah acara yang diadakan setiap akhir tahun di mana seluruh warga desa menyalakan lampion dan menerbangkannya sebagai simbol harapan dan doa untuk tahun yang akan datang.',
-    image: AttractionImg2,
-    location: '7 km dari pusat desa',
-  },
-  {
-    id: 6,
-    title: 'Tracking Hutan Pinus',
-    description:
-      'Jalur tracking melalui hutan pinus yang sejuk dengan berbagai flora dan fauna.',
-    image: AttractionImg3,
-    location: '4 km dari pusat desa',
-  },
-]
+interface File {
+  id: number
+  url: string
+  name: string
+  ext: string
+}
 
-const AttractionCarousel: FC<AttractionSectionType> = (props) => {
-  const { title, description } = props
+interface Picture {
+  id: number
+  files: File[]
+}
+
+interface Event {
+  id: number
+  documentId: string
+  title: string
+  startdate: string
+  enddate: string
+  subtitle: string
+  description: string
+  location: string
+  price: number
+  picture: Picture[]
+}
+
+interface AttractionCarouselProps extends AttractionSectionType {
+  events: Event[]
+}
+
+const AttractionCarousel: FC<AttractionCarouselProps> = (props) => {
+  const { title, description, events } = props
   const [currentIndex, setCurrentIndex] = useState(0)
   const [visibleItems, setVisibleItems] = useState(3)
   const [touchStart, setTouchStart] = useState(0)
@@ -107,7 +85,7 @@ const AttractionCarousel: FC<AttractionSectionType> = (props) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const totalSlides = attractions.length - visibleItems + 1
+  const totalSlides = events.length - visibleItems + 1
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides)
@@ -192,18 +170,34 @@ const AttractionCarousel: FC<AttractionSectionType> = (props) => {
               ref={carouselRef}
               className="carousel-inner md:flex md:flex-row md:gap-8"
               style={{
-                width: '100vw',
+                width: '100%',
                 transition: 'transform 0.5s ease-in-out',
+                display: 'flex',
+                flexWrap: 'nowrap',
               }}
             >
-              {attractions.map((attraction) => {
-                const isLoved = lovedAttractions[attraction.id] || false
+              {events.map((event) => {
+                const isLoved = lovedAttractions[event.id] || false
+                const eventImage =
+                  event.picture?.[0]?.files?.[0]?.url || '/placeholder.svg'
+                const formattedDate = new Date(
+                  event.startdate,
+                ).toLocaleDateString('id-ID', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })
+
                 return (
-                  <Card key={attraction.id} className="w-full">
-                    <div className="relative h-[100vw] w-[100vw] md:h-[328px] md:w-[382px] rounded-xl">
+                  <Card
+                    key={event.id}
+                    className="w-full flex-shrink-0"
+                    style={{ width: '100%', maxWidth: '382px' }}
+                  >
+                    <div className="relative h-[100vw] w-full md:h-[328px] rounded-xl">
                       <Image
-                        src={attraction.image || '/placeholder.svg'}
-                        alt={attraction.title}
+                        src={eventImage}
+                        alt={event.title}
                         fill
                         className="object-cover rounded-xl"
                       />
@@ -219,19 +213,19 @@ const AttractionCarousel: FC<AttractionSectionType> = (props) => {
                         src={isLoved ? lovedIcon : unlovedIcon}
                         height={48}
                         width={48}
-                        onClick={() => toggleLove(attraction.id)}
+                        onClick={() => toggleLove(event.id)}
                         alt="love-icon"
                         className="absolute top-5 right-8 md:right-3 cursor-pointer"
                       />
                     </div>
                     <CardHeader>
-                      <CardTitle>{attraction.title}</CardTitle>
+                      <CardTitle>{event.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p
                         className="text-muted-foreground"
                         dangerouslySetInnerHTML={{
-                          __html: attraction.description,
+                          __html: event.description,
                         }}
                       />
                     </CardContent>
@@ -242,7 +236,7 @@ const AttractionCarousel: FC<AttractionSectionType> = (props) => {
                         width={24}
                         alt="calendar-icon"
                       />
-                      <label className="text-gray-600">22 April 2025</label>
+                      <label className="text-gray-600">{formattedDate}</label>
                     </CardFooter>
                   </Card>
                 )
