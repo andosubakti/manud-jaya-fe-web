@@ -21,8 +21,9 @@ export default function Footer() {
               <h3 className="text-xl font-bold">Desa Manud Jaya</h3>
             </div>
             <p className="mt-4">
-              There are many variations of passages of available but it is the
-              majority of suffered that a alteration in that some dummy text.
+              Kecamatan Mandalawangi, Kabupaten Bandung Barat, Provinsi Jawa
+              Barat, Indonesia <br />
+              Koordinat GPS: -6.8270, 107.4591
             </p>
           </div>
 
