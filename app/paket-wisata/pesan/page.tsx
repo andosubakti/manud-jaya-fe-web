@@ -3,6 +3,109 @@ import React, { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Breadcrumb } from '@/components/breadcrumb'
 
+// Fungsi mock API
+async function mockBookingAPI(data: any) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Generate nomor booking random
+      const bookingNumber = Math.random()
+        .toString(36)
+        .substring(2, 10)
+        .toUpperCase()
+      resolve({ success: true, bookingNumber, ...data })
+    }, 1200)
+  })
+}
+
+// Komponen tampilan sukses
+function BookingSuccess({
+  data,
+  bookingNumber,
+}: {
+  data: any
+  bookingNumber: string
+}) {
+  return (
+    <>
+      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <h2 className="text-2xl font-bold text-center mb-2">Terima Kasih!</h2>
+        <p className="text-center text-lg font-semibold mb-4 text-gray-600">
+          Berikut adalah data pesanan anda
+        </p>
+        <div className="mb-4 flex flex-col md:flex-row md:items-center md:gap-4 justify-center">
+          <span className="font-semibold">Nomor Booking:</span>
+          <input
+            className="bg-gray-100 rounded px-3 py-1 font-mono text-sm border w-full md:w-auto mt-2 md:mt-0"
+            value={bookingNumber}
+            readOnly
+          />
+        </div>
+        <p className="text-center text-gray-700 mb-2">
+          Kami akan menghubungi kamu paling lambat{' '}
+          <span className="font-bold text-blue-700">2x24 Jam</span> dari waktu
+          pemesanan.
+          <br />
+          Apabila tidak ada info dari kami, silahkan hubungi Nomor berikut :
+          <br />
+          <span className="font-bold text-blue-800 text-lg block mt-1">
+            Yudi (08121808121)
+          </span>
+        </p>
+        <div className="mt-6">
+          <h3 className="font-bold text-lg mb-3">Ringkasan Pemesan</h3>
+          <div className="mb-2">
+            <span className="font-semibold">Nama:</span>
+            <div className="bg-gray-100 rounded px-3 py-1 mt-1">
+              {data.nama}
+            </div>
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">Alamat:</span>
+            <div className="bg-gray-100 rounded px-3 py-1 mt-1 whitespace-pre-line">
+              {data.alamat}
+            </div>
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">Email:</span>
+            <div className="bg-gray-100 rounded px-3 py-1 mt-1">
+              {data.email}
+            </div>
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">No. HP:</span>
+            <div className="bg-gray-100 rounded px-3 py-1 mt-1">
+              {data.noHp}
+            </div>
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">Paket Wisata:</span>
+            <div className="bg-gray-100 rounded px-3 py-1 mt-1">
+              {data.paketWisata}
+            </div>
+          </div>
+          <div className="mb-2">
+            <span className="font-semibold">Jumlah Peserta:</span>
+            <div className="bg-gray-100 rounded px-3 py-1 mt-1">
+              {data.jumlahPeserta}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow p-6 md:p-8 mt-6 text-gray-500 text-xs text-center font-semibold leading-relaxed">
+        Untuk memulai petualangan anda di desa Manud Jaya, kami akan menghubungi
+        kamu paling lambat 2x24 Jam dari waktu pesanan.
+        <br />
+        Apabila tidak ada info dari kami, silahkan hubungi Nomor berikut :<br />
+        Yudi (08121808121)
+        <br />
+        Pembayaran dilakukan secara langsung di lokasi ya.
+        <br />
+        Yuk siap siap untuk petualangan di Desa Manud Jaya!
+      </div>
+    </>
+  )
+}
+
 // Form Component that uses useSearchParams
 function BookingForm() {
   const searchParams = useSearchParams()
@@ -16,11 +119,20 @@ function BookingForm() {
     paketWisata: selectedPaket || '',
     jumlahPeserta: '',
   })
+  const [success, setSuccess] = useState(false)
+  const [bookingNumber, setBookingNumber] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log(formData)
+    setLoading(true)
+    // Simulasi call API
+    const res: any = await mockBookingAPI(formData)
+    setLoading(false)
+    if (res.success) {
+      setBookingNumber(res.bookingNumber)
+      setSuccess(true)
+    }
   }
 
   const handleChange = (
@@ -31,6 +143,10 @@ function BookingForm() {
       ...prev,
       [name]: value,
     }))
+  }
+
+  if (success) {
+    return <BookingSuccess data={formData} bookingNumber={bookingNumber} />
   }
 
   return (
@@ -161,9 +277,10 @@ function BookingForm() {
 
         <button
           type="submit"
-          className="w-full bg-[#82C341] text-white py-3 rounded-full hover:bg-[#82C341]/90 transition-colors text-lg font-medium mt-8"
+          className="w-full bg-[#82C341] text-white py-3 rounded-full hover:bg-[#82C341]/90 transition-colors text-lg font-medium mt-8 disabled:opacity-60"
+          disabled={loading}
         >
-          Pesan
+          {loading ? 'Memproses...' : 'Pesan'}
         </button>
       </form>
     </div>
