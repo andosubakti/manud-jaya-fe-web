@@ -244,7 +244,7 @@ export default function AtraksiAcaraPage() {
                     {event.title}
                   </h3>
                   <p className="text-[#64748B] text-[14px] mb-4 leading-relaxed">
-                    {event.subtitle}
+                    {event.description}
                   </p>
                   <div className="text-[14px]">
                     <div className="font-medium">Tanggal & Waktu:</div>

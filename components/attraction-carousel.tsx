@@ -13,8 +13,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
-import lovedIcon from '@/assets/loved.svg'
-import unlovedIcon from '@/assets/unloved.svg'
 import CalendarIcon from '@/assets/Calender.svg'
 import { FC } from 'react'
 import { AttractionSectionType } from '@/lib/type'
@@ -55,16 +53,6 @@ const AttractionCarousel: FC<AttractionCarouselProps> = (props) => {
   const [touchStart, setTouchStart] = useState(0)
   const [touchEnd, setTouchEnd] = useState(0)
   const carouselRef = useRef<HTMLDivElement>(null)
-  const [lovedAttractions, setLovedAttractions] = useState<{
-    [key: number]: boolean
-  }>({})
-
-  const toggleLove = (id: number) => {
-    setLovedAttractions((prev) => ({
-      ...prev,
-      [id]: !prev[id], // Toggle status loved berdasarkan id
-    }))
-  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -174,7 +162,6 @@ const AttractionCarousel: FC<AttractionCarouselProps> = (props) => {
               }}
             >
               {events.map((event) => {
-                const isLoved = lovedAttractions[event.id] || false
                 const eventImage =
                   event.picture?.[0]?.files?.[0]?.url || '/placeholder.svg'
                 const formattedDate = new Date(
@@ -197,22 +184,6 @@ const AttractionCarousel: FC<AttractionCarouselProps> = (props) => {
                         alt={event.title}
                         fill
                         className="object-cover rounded-xl"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Button
-                          size="lg"
-                          className="text-base rounded-xl font-bold bg-secondary text-primary hover:text-secondary"
-                        >
-                          Read More
-                        </Button>
-                      </div>
-                      <Image
-                        src={isLoved ? lovedIcon : unlovedIcon}
-                        height={48}
-                        width={48}
-                        onClick={() => toggleLove(event.id)}
-                        alt="love-icon"
-                        className="absolute top-5 right-8 md:right-3 cursor-pointer"
                       />
                     </div>
                     <CardHeader>
