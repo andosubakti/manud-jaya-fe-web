@@ -243,9 +243,10 @@ export default function AtraksiAcaraPage() {
                   <h3 className="text-[16px] font-semibold mb-2">
                     {event.title}
                   </h3>
-                  <p className="text-[#64748B] text-[14px] mb-4 leading-relaxed">
-                    {event.description}
-                  </p>
+                  <div
+                    className="text-[#64748B] text-[14px] mb-4 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: event.description }}
+                  ></div>
                   <div className="text-[14px]">
                     <div className="font-medium">Tanggal & Waktu:</div>
                     <div className="text-[#64748B]">
