@@ -24,38 +24,6 @@ const PaketWisataCarousel: FC<PaketWisataSectionType> = (props) => {
   const [touchEnd, setTouchEnd] = useState(0)
   const carouselRef = useRef<HTMLDivElement>(null)
 
-  const colors = [
-    'bg-pink-400',
-    'bg-yellow-400',
-    'bg-green-400',
-    'bg-blue-400',
-    'bg-purple-400',
-    'bg-orange-400',
-    'bg-red-400',
-    'bg-teal-400',
-    'bg-cyan-400',
-    'bg-amber-400',
-    'bg-lime-400',
-    'bg-rose-400',
-    'bg-fuchsia-400',
-    'bg-indigo-400',
-    'bg-violet-400',
-    'bg-emerald-400',
-    'bg-sky-400',
-    'bg-lightBlue-400',
-    'bg-yellow-300',
-    'bg-pink-300',
-  ]
-
-  const [randomColors, setRandomColors] = useState<string[]>([])
-
-  useEffect(() => {
-    // Pilih warna secara acak untuk setiap item setelah komponen mount
-    setRandomColors(
-      tours.map(() => colors[Math.floor(Math.random() * colors.length)]),
-    )
-  }, [tours])
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
@@ -161,7 +129,7 @@ const PaketWisataCarousel: FC<PaketWisataSectionType> = (props) => {
                 transition: 'transform 0.5s ease-in-out',
               }}
             >
-              {tours.map((tour, index) => {
+              {tours.map((tour) => {
                 return (
                   <Card
                     key={tour.id}
@@ -180,11 +148,6 @@ const PaketWisataCarousel: FC<PaketWisataSectionType> = (props) => {
                         fill
                         className="object-cover rounded-xl"
                       />
-                      <div
-                        className={`absolute left-4 top-4 py-2 px-4 rounded-full ${randomColors[index]} text-white text-xs`}
-                      >
-                        {`0${index + 1} TOURS`}
-                      </div>
                     </div>
                     <CardHeader>
                       <CardTitle>{tour.title}</CardTitle>
