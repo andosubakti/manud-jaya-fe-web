@@ -1,103 +1,69 @@
 'use client'
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import Image from 'next/image'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useRouter } from 'next/navigation'
+import { get } from '@/lib/helper'
+import { TourType } from '@/lib/type'
+import Pakethero from '@/assets/paket-hero.png'
 
-interface PaketWisata {
-  id: number
-  title: string
-  description: string
-  duration: string
-  time?: string
-  price: string
-  image: string
+interface ToursResponse {
+  data: TourType[]
+  meta: {
+    pagination: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
 }
 
 export default function PaketWisataPage() {
   const router = useRouter()
   const [sortBy, setSortBy] = useState('title')
-  const [selectedPaket, setSelectedPaket] = useState<PaketWisata | null>(null)
+  const [selectedPaket, setSelectedPaket] = useState<TourType | null>(null)
+  const [tours, setTours] = useState<TourType[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const paketWisata: PaketWisata[] = [
-    {
-      id: 1,
-      title: 'Jelajah Alam Manud',
-      description:
-        'Trekking ringan menyusuri perbukitan, hutan lindung, dan area persawahan dengan pemandu lokal.',
-      duration: '1 Hari',
-      time: '(08.00 - 15.00 WIB)',
-      price: 'Rp150.000/orang',
-      image: 'https://picsum.photos/id/110/800/600',
-    },
-    {
-      id: 2,
-      title: 'Dari Biji ke Cangkir: Wisata Kopi Lokal',
-      description:
-        'Belajar mengenal proses kopi dari kebun sampai cangkir sambil mencicipi kopi khas Manud Jaya.',
-      duration: '3 Jam',
-      price: 'Rp120.000/orang',
-      image: 'https://picsum.photos/id/766/800/600',
-    },
-    {
-      id: 3,
-      title: 'Belajar Membatik di Kampung Seni',
-      description:
-        'Workshop membatik tradisional bersama pengrajin lokal, cocok untuk anak-anak hingga dewasa.',
-      duration: '2 Jam',
-      price: 'Rp100.000/orang',
-      image: 'https://picsum.photos/id/603/800/600',
-    },
-    {
-      id: 4,
-      title: 'Menginap di Rumah Warga (Live-in Experience)',
-      description:
-        'Tinggal dan beraktivitas bersama keluarga lokal, merasakan langsung kehidupan pedesaan.',
-      duration: '2 Hari 1 Malam',
-      price: 'Rp250.000/orang/malam',
-      image: 'https://picsum.photos/id/164/800/600',
-    },
-    {
-      id: 5,
-      title: 'Kelas Masak Tradisional Sunda',
-      description:
-        'Belajar memasak makanan khas Sunda menggunakan bahan dari kebun lokal.',
-      duration: '2 Jam',
-      price: 'Rp90.000/orang',
-      image: 'https://picsum.photos/id/292/800/600',
-    },
-    {
-      id: 6,
-      title: 'Panen Sayur dan Buah Sendiri',
-      description:
-        'Petik sayur dan buah langsung dari kebun, bisa dibawa pulang sebagai oleh-oleh sehat.',
-      duration: '1,5 Jam',
-      price: 'Rp70.000/orang',
-      image: 'https://picsum.photos/id/493/800/600',
-    },
-  ]
+  useEffect(() => {
+    const fetchToursData = async () => {
+      try {
+        setIsLoading(true)
+        const response = await get<ToursResponse>(
+          '/tours?populate[pictures][populate]=*&pagination[page]=1&pagination[pageSize]=100&sort=title:asc',
+        )
+        console.log('Tours data:', response.data)
+        console.log('First tour pictures:', response.data[0]?.pictures)
+        setTours(response.data)
+        setError(null)
+      } catch (err) {
+        console.error('Error fetching tours data:', err)
+        setError('Gagal memuat data paket wisata. Silakan coba lagi nanti.')
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-  const sortedPaketWisata = useMemo(() => {
-    return [...paketWisata].sort((a, b) => {
+    fetchToursData()
+  }, [])
+
+  const sortedTours = useMemo(() => {
+    return [...tours].sort((a, b) => {
       switch (sortBy) {
         case 'title':
           return a.title.localeCompare(b.title)
         case 'price-asc':
-          return (
-            parseInt(a.price.replace(/\D/g, '')) -
-            parseInt(b.price.replace(/\D/g, ''))
-          )
+          return a.price - b.price
         case 'price-desc':
-          return (
-            parseInt(b.price.replace(/\D/g, '')) -
-            parseInt(a.price.replace(/\D/g, ''))
-          )
+          return b.price - a.price
         default:
           return 0
       }
     })
-  }, [paketWisata, sortBy])
+  }, [tours, sortBy])
 
   const handlePesan = (paketTitle: string) => {
     router.push(`/paket-wisata/pesan?paket=${encodeURIComponent(paketTitle)}`)
@@ -108,7 +74,7 @@ export default function PaketWisataPage() {
       {/* Hero Section */}
       <section className="relative h-[300px] flex items-center justify-center">
         <Image
-          src="https://picsum.photos/id/513/1920/1080"
+          src={Pakethero}
           alt="Hero Paket Wisata"
           fill
           className="object-cover brightness-50"
@@ -142,47 +108,72 @@ export default function PaketWisataPage() {
         </select>
       </div>
 
-      {/* Packages Grid */}
-      <div className="container mx-auto px-4 md:px-16 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedPaketWisata.map((paket) => (
-            <div
-              key={paket.id}
-              className="bg-white overflow-hidden cursor-pointer transition-transform hover:scale-[1.02]"
-              onClick={() => setSelectedPaket(paket)}
-            >
-              <div className="relative aspect-[4/3]">
-                <Image
-                  src={paket.image}
-                  alt={paket.title}
-                  fill
-                  className="object-cover rounded-t-xl"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-[#0F172A] mb-2">
-                  {paket.title}
-                </h3>
-                <p className="text-lg font-medium text-[#0F172A] mb-4">
-                  {paket.price}
-                </p>
-                <p className="text-[#64748B] mb-4 min-h-[60px]">
-                  {paket.description}
-                </p>
-                <button
-                  className="w-full bg-[#82C341] text-white py-3 rounded-full hover:bg-[#82C341]/90 transition-colors text-lg font-medium"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handlePesan(paket.title)
-                  }}
-                >
-                  Pesan Sekarang
-                </button>
-              </div>
-            </div>
-          ))}
+      {/* Loading State */}
+      {isLoading && (
+        <div className="container mx-auto px-4 md:px-16 pb-16 text-center">
+          <p className="text-lg text-gray-600">Memuat data paket wisata...</p>
         </div>
-      </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="container mx-auto px-4 md:px-16 pb-16 text-center">
+          <p className="text-lg text-red-600">{error}</p>
+        </div>
+      )}
+
+      {/* Packages Grid */}
+      {!isLoading && !error && (
+        <div className="container mx-auto px-4 md:px-16 pb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {sortedTours.map((paket) => (
+              <div
+                key={paket.id}
+                className="bg-white overflow-hidden cursor-pointer transition-transform hover:scale-[1.02]"
+                onClick={() => setSelectedPaket(paket)}
+              >
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src={
+                      paket.pictures &&
+                      paket.pictures[0].files[0].url &&
+                      paket.pictures[0].files[0].url !== ''
+                        ? paket.pictures[0].files[0].url
+                        : 'https://picsum.photos/id/110/800/600'
+                    }
+                    alt={paket.title}
+                    fill
+                    className="object-cover rounded-t-xl"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-[#0F172A] mb-2">
+                    {paket.title}
+                  </h3>
+                  <p className="text-lg font-medium text-[#0F172A] mb-4">
+                    Rp{paket.price.toLocaleString('id-ID')}
+                  </p>
+                  <p
+                    className="text-[#64748B] mb-4 min-h-[60px]"
+                    dangerouslySetInnerHTML={{
+                      __html: paket.short_description || paket.description,
+                    }}
+                  ></p>
+                  <button
+                    className="w-full bg-[#82C341] text-white py-3 rounded-full hover:bg-[#82C341]/90 transition-colors text-lg font-medium"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handlePesan(paket.title)
+                    }}
+                  >
+                    Pesan Sekarang
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Detail Dialog */}
       <Dialog
@@ -196,7 +187,13 @@ export default function PaketWisataPage() {
               <div className="block md:hidden w-full">
                 <div className="relative aspect-[4/3]">
                   <Image
-                    src={selectedPaket.image}
+                    src={
+                      selectedPaket.pictures &&
+                      selectedPaket.pictures[0].files[0].url &&
+                      selectedPaket.pictures[0].files[0].url !== ''
+                        ? selectedPaket.pictures[0].files[0].url
+                        : 'https://picsum.photos/id/110/800/600'
+                    }
                     alt={selectedPaket.title}
                     fill
                     className="object-cover rounded-xl"
@@ -210,17 +207,26 @@ export default function PaketWisataPage() {
                   <h2 className="text-2xl font-bold text-[#0F172A] mb-4">
                     {selectedPaket.title}
                   </h2>
-                  <p className="text-[#64748B] text-base mb-4">
-                    {selectedPaket.description}
-                  </p>
+                  <p
+                    className="text-[#64748B] text-base mb-4"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        selectedPaket.description ||
+                        selectedPaket.short_description,
+                    }}
+                  ></p>
                   <div className="text-[#64748B] text-base mb-1">
-                    {selectedPaket.duration}
-                    {selectedPaket.time && <span> {selectedPaket.time}</span>}
+                    <span className="font-medium">
+                      {selectedPaket.duration_days > 0 &&
+                        `${selectedPaket.duration_days} Hari `}
+                      {selectedPaket.duration_hours > 0 &&
+                        `${selectedPaket.duration_hours} Jam`}
+                    </span>
                   </div>
                   <div className="mt-6">
                     <div className="text-[#94A3B8] text-base mb-1">Harga</div>
                     <div className="text-2xl font-bold text-[#0F172A] mb-6">
-                      {selectedPaket.price}
+                      Rp{selectedPaket.price.toLocaleString('id-ID')}
                     </div>
                     <button
                       className="w-full bg-[#82C341] text-white py-3 rounded-full text-base font-medium hover:bg-[#82C341]/90 transition-colors"
@@ -243,23 +249,28 @@ export default function PaketWisataPage() {
                 </h2>
 
                 <div className="bg-[#F8FAFC] rounded-3xl p-8">
-                  <p className="text-[#64748B] text-lg leading-[1.8]">
-                    {selectedPaket.description}
-                  </p>
+                  <p
+                    className="text-[#64748B] text-lg leading-[1.8]"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        selectedPaket.description ||
+                        selectedPaket.short_description,
+                    }}
+                  ></p>
                   <div className="mt-4 text-[#64748B] text-lg">
                     <span className="font-medium">
-                      {selectedPaket.duration}
+                      {selectedPaket.duration_days > 0 &&
+                        `${selectedPaket.duration_days} Hari `}
+                      {selectedPaket.duration_hours > 0 &&
+                        `${selectedPaket.duration_hours} Jam`}
                     </span>
-                    {selectedPaket.time && (
-                      <div className="mt-1">{selectedPaket.time}</div>
-                    )}
                   </div>
                 </div>
 
                 <div className="mt-8">
                   <div className="text-[#94A3B8] text-lg">Harga</div>
                   <div className="text-[40px] leading-[1.2] font-bold text-[#0F172A] mt-2 mb-8">
-                    {selectedPaket.price}
+                    Rp{selectedPaket.price.toLocaleString('id-ID')}
                   </div>
 
                   <button
@@ -273,7 +284,13 @@ export default function PaketWisataPage() {
 
               <div className="hidden md:block md:w-[45%] relative aspect-[4/3]">
                 <Image
-                  src={selectedPaket.image}
+                  src={
+                    selectedPaket.pictures &&
+                    selectedPaket.pictures[0].files[0].url &&
+                    selectedPaket.pictures[0].files[0].url !== ''
+                      ? selectedPaket.pictures[0].files[0].url
+                      : 'https://picsum.photos/id/110/800/600'
+                  }
                   alt={selectedPaket.title}
                   fill
                   className="object-cover rounded-3xl"
