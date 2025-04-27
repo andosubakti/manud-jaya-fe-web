@@ -47,6 +47,25 @@
     --input: 12 6.5% 15.1%;
     --ring: 142.4 71.8% 29.2%;
   }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-4xl font-bold md:text-5xl;
+  }
+  h2 {
+    @apply text-3xl font-bold md:text-4xl;
+  }
+  h3 {
+    @apply text-2xl font-bold md:text-3xl;
+  }
+  h4 {
+    @apply text-xl font-bold md:text-2xl;
+  }
 }
 
 @layer base {
