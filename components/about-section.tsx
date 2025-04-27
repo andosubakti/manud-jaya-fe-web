@@ -40,28 +40,28 @@ const AboutSection: FC<AboutSectionType> = (props) => {
       </div>
     </div>,
     // Slide 2: Demografi
-    <div key={2} className="flex flex-col md:flex-row items-center gap-12">
-      <div className="md:w-1/2 w-full mb-6 md:mb-0">
-        <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
-          <Image
-            src={AboutImg}
-            alt="Demografi Desa Manud Jaya"
-            fill
-            className="object-cover rounded-xl"
-            priority
-          />
-        </div>
-      </div>
-      <div className="md:w-1/2 w-full text-[#222] text-left">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#222]">
-          Demografi Desa Wisata Manud Jaya
-        </h2>
-        <p
-          className="text-muted-foreground mb-6 text-justify"
-          dangerouslySetInnerHTML={{ __html: demografiText }}
-        />
-      </div>
-    </div>,
+    // <div key={2} className="flex flex-col md:flex-row items-center gap-12">
+    //   <div className="md:w-1/2 w-full mb-6 md:mb-0">
+    //     <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
+    //       <Image
+    //         src={AboutImg}
+    //         alt="Demografi Desa Manud Jaya"
+    //         fill
+    //         className="object-cover rounded-xl"
+    //         priority
+    //       />
+    //     </div>
+    //   </div>
+    //   <div className="md:w-1/2 w-full text-[#222] text-left">
+    //     <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#222]">
+    //       Demografi Desa Wisata Manud Jaya
+    //     </h2>
+    //     <p
+    //       className="text-muted-foreground mb-6 text-justify"
+    //       dangerouslySetInnerHTML={{ __html: demografiText }}
+    //     />
+    //   </div>
+    // </div>,
   ]
 
   const handlePrev = () =>
@@ -73,7 +73,7 @@ const AboutSection: FC<AboutSectionType> = (props) => {
     <section id="about" className="py-20 bg-secondary/30 relative">
       <div className="container mx-auto px-4 min-h-[500px] flex flex-col items-center justify-center relative">
         {/* Arrow Controls at top right */}
-        <div className="w-full flex justify-end md:justify-center md:pl-36 items-center mb-4">
+        {/* <div className="w-full flex justify-end md:justify-center md:pl-36 items-center mb-4">
           <div className="flex gap-2 bg-white/80 rounded-full p-1 shadow-md">
             <button
               aria-label="Sebelumnya"
@@ -90,7 +90,7 @@ const AboutSection: FC<AboutSectionType> = (props) => {
               <ChevronRight className="h-6 w-6" />
             </button>
           </div>
-        </div>
+        </div> */}
         <div className="w-full h-full relative flex items-center justify-center transition-all duration-500">
           {slides[activeSlide]}
         </div>
