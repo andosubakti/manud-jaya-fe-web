@@ -1,18 +1,18 @@
 import Image from 'next/image'
-import AboutImg from '@/assets/about.png'
+// import AboutImg from '@/assets/about.png'
 import { AboutSectionType } from '@/lib/type'
-import { FC, useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { FC } from 'react'
+// import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-const demografiText = `
-<p>Desa Wisata Manud Jaya terletak di Kecamatan Mandalawangi, Kabupaten Bandung Barat, Provinsi Jawa Barat. Jaraknya sekitar 2 jam perjalanan dari Kota Bandung melalui akses jalan raya yang relatif mudah dijangkau. Berada di kaki pegunungan dengan ketinggian sekitar 800 mdpl, desa ini menawarkan suasana sejuk serta pemandangan alam perbukitan yang indah.</p>
-<p>Secara administratif, Desa Manud Jaya memiliki luas wilayah kurang lebih 1.200 hektare. Sebagian besar lahan dimanfaatkan untuk persawahan dan perkebunan kopi, cengkeh, serta hutan lindung yang potensial dikembangkan sebagai destinasi ekowisata. Wilayah perbukitan yang mengelilingi desa juga memberikan peluang untuk aktivitas trekking dan fotografi alam.</p>
-<p>Berdasarkan data terakhir, jumlah penduduk di Desa Manud Jaya mencapai sekitar 2.800 jiwa, yang tersebar di empat dusun. Mayoritas penduduk bekerja di sektor pertanian dan perkebunan, sementara sebagian lainnya terlibat dalam pengembangan usaha pariwisata serta kerajinan tangan lokal untuk mendukung ekonomi desa.</p>
-`
+// const demografiText = `
+// <p>Desa Wisata Manud Jaya terletak di Kecamatan Mandalawangi, Kabupaten Bandung Barat, Provinsi Jawa Barat. Jaraknya sekitar 2 jam perjalanan dari Kota Bandung melalui akses jalan raya yang relatif mudah dijangkau. Berada di kaki pegunungan dengan ketinggian sekitar 800 mdpl, desa ini menawarkan suasana sejuk serta pemandangan alam perbukitan yang indah.</p>
+// <p>Secara administratif, Desa Manud Jaya memiliki luas wilayah kurang lebih 1.200 hektare. Sebagian besar lahan dimanfaatkan untuk persawahan dan perkebunan kopi, cengkeh, serta hutan lindung yang potensial dikembangkan sebagai destinasi ekowisata. Wilayah perbukitan yang mengelilingi desa juga memberikan peluang untuk aktivitas trekking dan fotografi alam.</p>
+// <p>Berdasarkan data terakhir, jumlah penduduk di Desa Manud Jaya mencapai sekitar 2.800 jiwa, yang tersebar di empat dusun. Mayoritas penduduk bekerja di sektor pertanian dan perkebunan, sementara sebagian lainnya terlibat dalam pengembangan usaha pariwisata serta kerajinan tangan lokal untuk mendukung ekonomi desa.</p>
+// `
 
 const AboutSection: FC<AboutSectionType> = (props) => {
   const { title, description, image } = props
-  const [activeSlide, setActiveSlide] = useState(0)
+  // const [activeSlide, setActiveSlide] = useState(0)
 
   const slides = [
     // Slide 1: About (default)
@@ -64,10 +64,10 @@ const AboutSection: FC<AboutSectionType> = (props) => {
     // </div>,
   ]
 
-  const handlePrev = () =>
-    setActiveSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
-  const handleNext = () =>
-    setActiveSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+  // const handlePrev = () =>
+  //   setActiveSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
+  // const handleNext = () =>
+  //   setActiveSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
 
   return (
     <section id="about" className="py-20 bg-secondary/30 relative">
@@ -92,7 +92,7 @@ const AboutSection: FC<AboutSectionType> = (props) => {
           </div>
         </div> */}
         <div className="w-full h-full relative flex items-center justify-center transition-all duration-500">
-          {slides[activeSlide]}
+          {slides[0]}
         </div>
       </div>
     </section>
