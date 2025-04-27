@@ -2,20 +2,7 @@
 import React, { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Breadcrumb } from '@/components/breadcrumb'
-
-// Fungsi mock API
-async function mockBookingAPI(data: any) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Generate nomor booking random
-      const bookingNumber = Math.random()
-        .toString(36)
-        .substring(2, 10)
-        .toUpperCase()
-      resolve({ success: true, bookingNumber, ...data })
-    }, 1200)
-  })
-}
+import { post } from '@/lib/helper'
 
 // Komponen tampilan sukses
 function BookingSuccess({
@@ -48,7 +35,7 @@ function BookingSuccess({
           Apabila tidak ada info dari kami, silahkan hubungi Nomor berikut :
           <br />
           <span className="font-bold text-blue-800 text-lg block mt-1">
-            Yudi (08121808121)
+            081234567890
           </span>
         </p>
         <div className="mt-6">
@@ -106,11 +93,10 @@ function BookingSuccess({
   )
 }
 
-// Form Component that uses useSearchParams
 function BookingForm() {
   const searchParams = useSearchParams()
   const selectedPaket = searchParams.get('paket')
-
+  const selectedPaketId = searchParams.get('id')
   const [formData, setFormData] = useState({
     nama: '',
     alamat: '',
@@ -122,16 +108,48 @@ function BookingForm() {
   const [success, setSuccess] = useState(false)
   const [bookingNumber, setBookingNumber] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    // Simulasi call API
-    const res: any = await mockBookingAPI(formData)
-    setLoading(false)
-    if (res.success) {
-      setBookingNumber(res.bookingNumber)
+    setError(null)
+
+    try {
+      // Format the date to ISO string (current date + 1 day)
+      const today = new Date()
+      today.setDate(today.getDate())
+      today.setHours(today.getHours())
+
+      // Generate a booking ID
+      const bookingId = `#MJ${Math.floor(Math.random() * 100000)
+        .toString()
+        .padStart(5, '0')}`
+
+      // Prepare the request body according to the required format
+      const requestBody = {
+        data: {
+          booking_id: bookingId,
+          customer_name: formData.nama,
+          customer_phone: formData.noHp,
+          customer_email: formData.email,
+          customer_amount: parseInt(formData.jumlahPeserta),
+          customer_address: formData.alamat,
+          date: today.toISOString(),
+          tour: parseInt(selectedPaketId || '0'),
+        },
+      }
+
+      // Send the request to the API
+      await post('/bookings', requestBody)
+
+      setBookingNumber(bookingId)
       setSuccess(true)
+    } catch (err) {
+      console.error('Error submitting booking:', err)
+      setError('Terjadi kesalahan saat memproses pesanan. Silakan coba lagi.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -157,6 +175,12 @@ function BookingForm() {
       <p className="text-center text-gray-600 mb-8">
         Ayo mulai petualangan di desa Manud Jaya!
       </p>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          {error}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>

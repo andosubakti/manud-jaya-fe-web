@@ -65,8 +65,12 @@ export default function PaketWisataPage() {
     })
   }, [tours, sortBy])
 
-  const handlePesan = (paketTitle: string) => {
-    router.push(`/paket-wisata/pesan?paket=${encodeURIComponent(paketTitle)}`)
+  const handlePesan = (paketTitle: string, paketId: number) => {
+    router.push(
+      `/paket-wisata/pesan?paket=${encodeURIComponent(
+        paketTitle,
+      )}&id=${paketId}`,
+    )
   }
 
   return (
@@ -163,7 +167,7 @@ export default function PaketWisataPage() {
                     className="w-full bg-[#82C341] text-white py-3 rounded-full hover:bg-[#82C341]/90 transition-colors text-lg font-medium"
                     onClick={(e) => {
                       e.stopPropagation()
-                      handlePesan(paket.title)
+                      handlePesan(paket.title, paket.id)
                     }}
                   >
                     Pesan Sekarang
@@ -230,7 +234,9 @@ export default function PaketWisataPage() {
                     </div>
                     <button
                       className="w-full bg-[#82C341] text-white py-3 rounded-full text-base font-medium hover:bg-[#82C341]/90 transition-colors"
-                      onClick={() => handlePesan(selectedPaket.title)}
+                      onClick={() =>
+                        handlePesan(selectedPaket.title, selectedPaket.id)
+                      }
                     >
                       Pesan Sekarang
                     </button>
@@ -275,7 +281,9 @@ export default function PaketWisataPage() {
 
                   <button
                     className="w-full bg-[#82C341] text-white py-4 rounded-full text-lg font-medium hover:bg-[#82C341]/90 transition-colors"
-                    onClick={() => handlePesan(selectedPaket.title)}
+                    onClick={() =>
+                      handlePesan(selectedPaket.title, selectedPaket.id)
+                    }
                   >
                     Pesan Sekarang
                   </button>
