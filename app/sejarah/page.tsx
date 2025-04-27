@@ -1,7 +1,92 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { get } from '@/lib/helper'
+import SejarahHero from '@/assets/sejarah-hero.png'
+
+// Types for API response
+interface MediaFormat {
+  ext: string
+  url: string
+  hash: string
+  mime: string
+  name: string
+  path: null
+  size: number
+  width: number
+  height: number
+  sizeInBytes: number
+}
+
+interface Media {
+  id: number
+  documentId: string
+  name: string
+  alternativeText: null
+  caption: null
+  width: number
+  height: number
+  formats: {
+    large?: MediaFormat
+    small: MediaFormat
+    medium: MediaFormat
+    thumbnail: MediaFormat
+  }
+  hash: string
+  ext: string
+  mime: string
+  size: number
+  url: string
+  previewUrl: null
+  provider: string
+  provider_metadata: null
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+}
+
+interface CommonSection {
+  __component: string
+  id: number
+  title: string | null
+  body: string | null
+  media: Media[]
+}
+
+interface SejarahPageData {
+  id: number
+  documentId: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  content_page: CommonSection[]
+}
 
 export default function SejarahPage() {
+  const [
+    sejarahPageData,
+    setSejarahPageData,
+  ] = useState<SejarahPageData | null>(null)
+
+  // Function to fetch sejarah page data
+  const fetchSejarahPageData = async () => {
+    try {
+      const res = await get('/sejarah-page?populate[content_page][populate]=*')
+      if (res?.data) {
+        setSejarahPageData(res.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch sejarah page:', error)
+      return null
+    }
+  }
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchSejarahPageData()
+  }, [])
+
+  // Get timeline events from API response
   const timelineEvents = [
     {
       year: '1800',
@@ -30,43 +115,29 @@ export default function SejarahPage() {
     },
   ]
 
-  const historicalEvents = [
-    {
-      title: 'Kebangkitan Manud Jaya Pasca Bencana Alam (1952)',
-      description:
-        'Pada tahun 1952, Desa Manud Jaya mengalami bencana alam besar berupa tanah longsor yang menghancurkan sebagian besar lahan pertanian utama. Peristiwa ini menjadi momen penting karena seluruh warga desa bersatu untuk membangun kembali kehidupan mereka dari nol. Semangat gotong-royong inilah yang memperkuat karakter masyarakat Manud Jaya sebagai komunitas yang tangguh dan harmonis.',
-      image: 'https://picsum.photos/id/164/800/600',
-      year: '1952',
-    },
-    {
-      title: 'Legenda Burung Merpati dan Filosofi Desa (Awal Abad ke-19)',
-      description:
-        'Berdasarkan cerita turun-temurun, Desa Manud Jaya mengambil inspirasi namanya dari kisah tentang burung merpati yang dianggap membawa harapan dan kedamaian di masa sulit. Cerita ini mengakar kuat dalam identitas desa dan menjadi simbol filosofi hidup warga: kemakmuran yang lahir dari kedamaian.',
-      image: 'https://picsum.photos/id/110/800/600',
-      year: 'Awal Abad ke-19',
-    },
-    {
-      title: 'Kehadiran Tokoh Inspiratif: Ki Arya Manud (1955)',
-      description:
-        'Ki Arya Manud adalah sosok pemimpin lokal yang dihormati karena usahanya membangkitkan desa dari keterpurukan pasca bencana dan memperkenalkan sistem pertanian berkelanjutan. Ia juga mendorong masyarakat untuk mulai mengenalkan hasil pertanian dan kerajinan tangan desa ke kota-kota besar di Jawa Barat.',
-      image: 'https://picsum.photos/id/219/800/600',
-      year: '1955',
-    },
-    {
-      title: 'Awal Transformasi Desa Menjadi Desa Wisata (2010)',
-      description:
-        'Pada tahun 2010, generasi muda Desa Manud Jaya menginisiasi program &quot;Manud Jaya Bangkit&quot; yang mengubah desa dari desa pertanian biasa menjadi desa wisata berbasis alam dan budaya. Inisiatif ini memanfaatkan keindahan alam, tradisi lokal, dan kerajinan tangan untuk memperkenalkan desa ke wisatawan lokal dan mancanegara.',
-      image: 'https://picsum.photos/id/278/800/600',
-      year: '2010',
-    },
-  ]
+  // Get historical events from API response
+  const historicalEvents =
+    sejarahPageData?.content_page
+      .filter(
+        (section) =>
+          section.__component === 'shared.common-section' && section.id >= 4,
+      )
+      .map((section) => ({
+        title:
+          section.body?.match(/<h1><strong>(.*?)<\/strong><\/h1>/)?.[1] || '',
+        description:
+          section.body?.replace(/<h1><strong>.*?<\/strong><\/h1>/, '').trim() ||
+          '',
+        image: section.media[0]?.url || '',
+        year: section.body?.match(/\((\d{4})\)/)?.[1] || '',
+      })) || []
 
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
       <div className="relative h-[400px] w-full">
         <Image
-          src="https://picsum.photos/id/513/1920/1080"
+          src={SejarahHero}
           alt="Sejarah Desa Hero"
           fill
           className="object-cover brightness-50 sepia"
@@ -81,12 +152,16 @@ export default function SejarahPage() {
         {/* Deskripsi Desa */}
         <div className="mb-24">
           <h2 className="text-4xl font-bold text-center mb-12">
-            Desa Wisata Manud Jaya
+            {sejarahPageData?.content_page[0].title ||
+              'Sejarah Desa Manud Jaya'}
           </h2>
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
               <Image
-                src="https://picsum.photos/id/164/1200/800"
+                src={
+                  sejarahPageData?.content_page[0].media[0].url ||
+                  'https://picsum.photos/id/164/1200/800'
+                }
                 alt="Desa Manud Jaya"
                 width={1200}
                 height={800}
@@ -94,24 +169,12 @@ export default function SejarahPage() {
               />
             </div>
             <div className="space-y-6 text-gray-600 text-lg text-justify">
-              <p>
-                Desa Wisata Manud Jaya terletak di Kecamatan Mandolawangi,
-                Kabupaten Bandung Barat, dan memiliki sejarah yang erat dengan
-                kehidupan masyarakat agraris. Sejak masa kolonial, desa ini
-                mengandalkan pertanian dan perkebunan kopi serta cengkeh sebagai
-                sumber kehidupan utama. Tradisi masyarakat yang ramah dengan
-                alam dan kerajinan tangan menjadi dasar bagi pengembangan wisata
-                desa.
-              </p>
-              <p>
-                Pada awal 2000-an, Desa Manud Jaya mulai mengembangkan potensi
-                alam dan budaya sebagai daya tarik wisata. Melalui wisata
-                berbasis alam dan budaya, desa ini menarik perhatian wisatawan
-                dengan pengalaman langsung di bidang alam, kegiatan pertanian,
-                serta kerajinan lokal. Kini, Desa Manud Jaya dikenal sebagai
-                destinasi wisata yang ramah lingkungan, memberikan pengalaman
-                yang mendalam tentang kehidupan desa dan kekayaan alamnya.
-              </p>
+              <div
+                className="text-[#64748B] text-lg leading-relaxed prose prose-lg max-w-none prose-p:mb-4"
+                dangerouslySetInnerHTML={{
+                  __html: sejarahPageData?.content_page[0].body || '',
+                }}
+              />
             </div>
           </div>
         </div>
@@ -122,7 +185,10 @@ export default function SejarahPage() {
             <div className="lg:w-[400px] flex-shrink-0 relative">
               <div className="relative h-[300px] lg:h-full">
                 <Image
-                  src="https://picsum.photos/id/110/800/800"
+                  src={
+                    sejarahPageData?.content_page[1].media[0].url ||
+                    'https://picsum.photos/id/110/800/800'
+                  }
                   alt="Ilustrasi Asal Usul"
                   fill
                   className="rounded-lg object-cover"
@@ -130,38 +196,16 @@ export default function SejarahPage() {
               </div>
             </div>
             <div className="flex-1">
-              <h2 className="text-4xl font-bold mb-8">Asal Usul Nama Desa</h2>
+              <h2 className="text-4xl font-bold mb-8">
+                {sejarahPageData?.content_page[1].title}
+              </h2>
               <div className="space-y-6 text-gray-600 text-lg">
-                <p>
-                  Desa Manud Jaya, dengan segala keindahan alam dan budaya yang
-                  dimilikinya, memiliki cerita menarik di balik asal-usul
-                  namanya. Nama &quot;Manud Jaya&quot; konon berasal dari dua
-                  kata dalam bahasa Sunda: &quot;Manud&quot; yang berarti
-                  &quot;merpati&quot; dan &quot;Jaya&quot; yang berarti
-                  &quot;kemakmuran&quot; atau &quot;kemenangan&quot;. Dalam
-                  sejarah desa ini, merpati sering dianggap sebagai simbol
-                  kedamaian dan harapan. Masyarakat desa percaya bahwa merpati
-                  yang terbang bebas di udara, melambangkan kehidupan yang
-                  harmonis dan penuh kedamaian. Oleh karena itu, nama
-                  &quot;Manud Jaya&quot; diartikan sebagai &quot;kemakmuran yang
-                  datang dari kedamaian&quot;, sebuah filosofi hidup yang
-                  diterapkan oleh penduduk desa dalam menjalani kehidupan
-                  mereka.
-                </p>
-                <p>
-                  Cerita rakyat yang berkembang di desa ini mengisahkan tentang
-                  seorang pemimpin desa yang sangat dihormati karena
-                  kebijaksanaannya. Dikisahkan bahwa pada suatu masa, desa ini
-                  menghadapi masa-masa sulit, diikuti bencana alam yang
-                  menghancurkan hasil pertanian. Namun pemimpin desa tersebut
-                  selalu mengajarkan pentingnya bekerja bersama dan menjaga
-                  kedamaian antar sesama. Seiring berjalannya waktu, desa ini
-                  berhasil bangkit dan berkembang dengan pesat, berkat kedamaian
-                  dan kerjasama yang terjalin erat di antara warganya. Sejak
-                  saat itu, nama &quot;Manud Jaya&quot; digunakan sebagai
-                  pengingat bahwa kedamaian dan kebersamaan adalah kunci menuju
-                  kemakmuran.
-                </p>
+                <div
+                  className="text-[#64748B] text-lg leading-relaxed prose prose-lg max-w-none prose-p:mb-4"
+                  dangerouslySetInnerHTML={{
+                    __html: sejarahPageData?.content_page[1].body || '',
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -170,7 +214,8 @@ export default function SejarahPage() {
         {/* Timeline */}
         <div>
           <h2 className="text-4xl font-bold text-center mb-16">
-            Timeline Perkembangan Desa
+            {sejarahPageData?.content_page[2]?.title ||
+              'Timeline Perkembangan Desa'}
             <br />
             Manud Jaya
           </h2>
@@ -193,9 +238,7 @@ export default function SejarahPage() {
         {/* Peristiwa Bersejarah */}
         <div className="mb-24">
           <h2 className="text-4xl font-bold text-center mb-16">
-            Peristiwa Bersejarah di Desa
-            <br />
-            Manud Jaya
+            {sejarahPageData?.content_page[3].title}
           </h2>
           <div className="space-y-24">
             {historicalEvents.map((event, index) => (
@@ -215,7 +258,12 @@ export default function SejarahPage() {
                 </div>
                 <div className="lg:w-1/2 space-y-4">
                   <h3 className="text-3xl font-bold">{event.title}</h3>
-                  <p className="text-lg text-gray-600">{event.description}</p>
+                  <div
+                    className="text-[#64748B] text-lg leading-relaxed prose prose-lg max-w-none prose-p:mb-4"
+                    dangerouslySetInnerHTML={{
+                      __html: event.description,
+                    }}
+                  />
                 </div>
               </div>
             ))}
