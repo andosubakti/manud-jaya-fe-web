@@ -78,17 +78,6 @@ function BookingSuccess({
           </div>
         </div>
       </div>
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow p-6 md:p-8 mt-6 text-gray-500 text-xs text-center font-semibold leading-relaxed">
-        Untuk memulai petualangan anda di desa Manud Jaya, kami akan menghubungi
-        kamu paling lambat 2x24 Jam dari waktu pesanan.
-        <br />
-        Apabila tidak ada info dari kami, silahkan hubungi Nomor berikut :<br />
-        Yudi (08121808121)
-        <br />
-        Pembayaran dilakukan secara langsung di lokasi ya.
-        <br />
-        Yuk siap siap untuk petualangan di Desa Manud Jaya!
-      </div>
     </>
   )
 }
